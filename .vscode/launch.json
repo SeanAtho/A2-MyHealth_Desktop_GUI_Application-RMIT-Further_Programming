@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MyHealthTracker",
+            "request": "launch",
+            "mainClass": "application.MyHealthTracker",
+            "projectName": "MyHealth_e19eb6fb"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
