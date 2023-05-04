@@ -40,6 +40,11 @@ public class MyHealthTrackerView extends Application {
     private TextArea noteField;
     private TableView<HealthRecord> recordsTable;
     private HealthRecord selectedRecord;
+    private Label fullNameLabel;
+    private TextField firstNameField;
+    private TextField lastNameField;
+
+
 
     /**
      * Main method to launch the application.
@@ -131,7 +136,7 @@ public class MyHealthTrackerView extends Application {
         // Create and configure the VBox layout
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(welcomeLabel, profileButton, recordsButton, exportButton, logoutButton);
+        vbox.getChildren().addAll(fullNameLabel, profileButton, recordsButton, exportButton, logoutButton);
 
         // Set the VBox as the root of the homeScene
         homeScene = new Scene(vbox, 300, 200);
@@ -203,7 +208,7 @@ public class MyHealthTrackerView extends Application {
         Button saveButton = new Button("Save");
         Button backButton = new Button("Back");
 
-        saveButton.setOnAction(e -> handleCreateRecord());
+        saveButton.setOnAction(e -> handleAddRecord());
         backButton.setOnAction(e -> showRecordsScene());
 
         GridPane grid = createRecordGridPane();
@@ -270,6 +275,14 @@ public class MyHealthTrackerView extends Application {
         updateHomeScene();
     }
 
+    /**
+     * Updates the home scene with the current user's information.
+     */
+    private void updateHomeScene() {
+        // Assuming you have a Label named fullNameLabel as an instance variable
+        fullNameLabel.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+    }
+
 
     /**
      * Sets the current scene to the profile scene.
@@ -277,6 +290,14 @@ public class MyHealthTrackerView extends Application {
     private void showProfileScene() {
         primaryStage.setScene(profileScene);
         updateProfileFields();
+    }
+
+    /**
+     * Updates the profile text fields with the current user's information.
+     */
+    private void updateProfileFields() {
+        firstNameField.setText(currentUser.getFirstName());
+        lastNameField.setText(currentUser.getLastName());
     }
 
     /**
@@ -311,6 +332,14 @@ public class MyHealthTrackerView extends Application {
         noteField.setText(record.getNote());
         primaryStage.setScene(editRecordScene);
     }
+
+    /**
+     * Updates the records table with the current user's health records.
+     */
+    private void updateRecordTable() {
+        recordsTable.setItems(FXCollections.observableArrayList(healthRecordController.getHealthRecordsForUser(currentUser)));
+    }
+
 
     /**
      * Handles user login with the provided username and password.
@@ -375,6 +404,19 @@ public class MyHealthTrackerView extends Application {
             showEditRecordScene(selectedRecord);
         } else {
             showErrorAlert("Please select a record to edit.");
+        }
+    }
+
+    /**
+     * Handles the Delete Record button click event, deleting the selected record.
+     */
+    private void handleDeleteRecord() {
+        HealthRecord selectedRecord = recordsTable.getSelectionModel().getSelectedItem();
+        if (selectedRecord != null) {
+            healthRecordController.deleteHealthRecord(selectedRecord);
+            updateRecordTable();
+        } else {
+            showErrorAlert("Please select a record to delete.");
         }
     }
 
