@@ -3,8 +3,10 @@ package controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import model.HealthRecord;
+import model.User;
 
 public class HealthRecordController {
     private List<HealthRecord> healthRecords;
@@ -55,5 +57,18 @@ public class HealthRecordController {
         return null;
     }
 
+    /**
+     * Gets the health records for the specified user.
+     *
+     * @param user the user whose health records are to be retrieved
+     * @return a list of health records for the specified user
+     */
+    public List<HealthRecord> getHealthRecordsForUser(User user) {
+        return healthRecords.stream()
+                .filter(record -> record.getUserId() == user.getId())
+                .collect(Collectors.toList());
+    }
+
+    
 }
     

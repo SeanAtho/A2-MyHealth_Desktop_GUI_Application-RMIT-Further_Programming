@@ -321,17 +321,18 @@ public class MyHealthTrackerView extends Application {
     }
 
     /**
-    * Displays the edit record scene on the primary stage with the given record's data.
-    *
-    * @param record the health record to edit
-    */
+     * Displays the edit record scene on the primary stage with the given record's data.
+     *
+     * @param record the health record to edit
+     */
     private void showEditRecordScene(HealthRecord record) {
-        weightField.setText(record.getWeight());
-        temperatureField.setText(record.getTemperature());
-        bloodPressureField.setText(record.getBloodPressure());
+        weightField.setText(String.valueOf(record.getWeight()));
+        temperatureField.setText(String.valueOf(record.getTemperature()));
+        bloodPressureField.setText(String.valueOf(record.getBloodPressure()));
         noteField.setText(record.getNote());
         primaryStage.setScene(editRecordScene);
     }
+
 
     /**
      * Updates the records table with the current user's health records.
