@@ -11,6 +11,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String id;
 
     /**
      * Constructor for the User class.
@@ -129,4 +130,12 @@ public class User {
         return Objects.hash(username, password, firstName, lastName);
     }
     
+    /**
+     * Gets the ID of the user.
+     * @return The user ID as a string.
+     */
+    public String getId() {
+        return id;
+    }
+
 }

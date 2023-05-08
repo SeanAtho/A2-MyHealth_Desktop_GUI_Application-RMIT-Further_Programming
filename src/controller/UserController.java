@@ -20,11 +20,42 @@ public class UserController {
     }
 
     /**
-     * Creates a new user profile with the provided user information.
-     * @param user the User object containing the user's information
+     * Returns the User object with the provided username.
+     * @param username The username of the user to find.
+     * @return The User object with the provided username, or null if not found.
      */
-    public void createProfile(User user) {
-        users.add(user);
+    public User getUserByUsername(String username) {
+        for (User user : users) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Registers a new user with the given username and password.
+     *
+     * @param username The desired username for the new user.
+     * @param password The desired password for the new user.
+     * @return The newly registered User object or null if the registration failed.
+     */
+    public User register(String username, String password, String firstName, String lastName) {
+        // Check if a user with the given username already exists
+        for (User existingUser : users) {
+            if (existingUser.getUsername().equals(username)) {
+                // A user with the same username already exists, so registration fails
+                return null;
+            }
+        }
+
+        // If the username is not taken, create a new User object and add it to the users list
+        User newUser = new User(username, password, firstName, lastName);
+        users.add(newUser);
+
+        // Return the newly registered User object
+        return newUser;
     }
 
     /**
@@ -41,6 +72,23 @@ public class UserController {
         }
         return false;
     }
+
+    /**
+     * Updates the information of the given user.
+     * @param updatedUser The User object containing the updated user information.
+     */
+    public void updateUser(User updatedUser) {
+        // Implement the logic to update the user's information.
+        // This could involve searching for the user in the list of users, then updating the user object with the new information.
+        for (int i = 0; i < users.size(); i++) {
+            User currentUser = users.get(i);
+            if (currentUser.getUsername().equals(updatedUser.getUsername())) {
+                users.set(i, updatedUser);
+                break;
+            }
+        }
+    }
+
 
     /**
      * Edits the profile information of an existing user.

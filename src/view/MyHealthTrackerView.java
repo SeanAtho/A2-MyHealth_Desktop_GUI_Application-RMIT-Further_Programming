@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 /**
  * This class is the main view for the My Health Tracker application.
@@ -43,8 +42,27 @@ public class MyHealthTrackerView extends Application {
     private Label fullNameLabel;
     private TextField firstNameField;
     private TextField lastNameField;
+    private Scene registerScene;
 
 
+    public MyHealthTrackerView(Stage primaryStage, UserController userController, HealthRecordController healthRecordController) {
+        this.primaryStage = primaryStage;
+        this.userController = userController;
+        this.healthRecordController = healthRecordController;
+        
+        // Set the title for the primary stage
+        this.primaryStage.setTitle("My Health Tracker");
+    
+        // Initialize the scenes
+        initLoginScene();
+        initRegisterScene();
+        initHomeScene();
+        initProfileScene();
+        initRecordsScene();
+        initCreateRecordScene();
+        initEditRecordScene();
+    }
+    
 
     /**
      * Main method to launch the application.
@@ -79,6 +97,7 @@ public class MyHealthTrackerView extends Application {
      */
     private void initComponents() {
         initLoginScene();
+        initRegisterScene();
         initHomeScene();
         initProfileScene();
         initRecordsScene();
@@ -87,6 +106,42 @@ public class MyHealthTrackerView extends Application {
     }
 
     // Initialization methods for loginScene, homeScene, and other scenes remain unchanged
+
+    /**
+     * Initializes the register scene.
+     */
+    private void initRegisterScene() {
+        // Create the UI elements for the register scene
+        VBox registerForm = new VBox(10);
+        TextField usernameField = new TextField();
+        TextField passwordField = new TextField();
+        TextField firstNameField = new TextField();
+        TextField lastNameField = new TextField();
+        Button registerButton = new Button("Register");
+        Button backButton = new Button("Back");
+
+        // Add the UI elements to the VBox
+        registerForm.getChildren().addAll(
+            new Label("Username:"), usernameField,
+            new Label("Password:"), passwordField,
+            new Label("First Name:"), firstNameField,
+            new Label("Last Name:"), lastNameField,
+            registerButton, backButton
+        );
+
+        // Set the event handlers for the buttons
+        registerButton.setOnAction(e -> handleRegister(
+            usernameField.getText(),
+            passwordField.getText(),
+            firstNameField.getText(),
+            lastNameField.getText()
+        ));
+        backButton.setOnAction(e -> showLoginScene());
+
+        // Create the scene and add it to the primary stage
+        registerScene = new Scene(registerForm, 300, 400);
+    }
+
 
     /**
     * Initializes the login scene with UI components and event handlers.
@@ -99,7 +154,14 @@ public class MyHealthTrackerView extends Application {
 
         // Set event handlers for the buttons
         loginButton.setOnAction(e -> handleLogin(usernameField.getText(), passwordField.getText()));
-        registerButton.setOnAction(e -> handleRegister(usernameField.getText(), passwordField.getText()));
+        registerButton.setOnAction(e -> {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        String firstName = firstNameField.getText(); // Replace with the actual TextField object for the first name
+        String lastName = lastNameField.getText(); // Replace with the actual TextField object for the last name
+        handleRegister(username, password, firstName, lastName);
+        });
+
 
         // Create and configure the GridPane layout
         GridPane grid = new GridPane();
@@ -333,6 +395,18 @@ public class MyHealthTrackerView extends Application {
         primaryStage.setScene(editRecordScene);
     }
 
+    /**
+     * Displays an error alert with the specified message.
+     *
+     * @param message The error message to display.
+     */
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     /**
      * Updates the records table with the current user's health records.
@@ -348,28 +422,33 @@ public class MyHealthTrackerView extends Application {
      * @param password The password entered by the user.
      */
     private void handleLogin(String username, String password) {
-        User user = userController.login(username, password);
-        if (user != null) {
-            currentUser = user;
+        boolean loginSuccessful = userController.login(username, password);
+        if (loginSuccessful) {
+            currentUser = userController.getUserByUsername(username);
             showHomeScene();
         } else {
             showErrorAlert("Invalid username or password.");
         }
     }
+    
 
     /**
-     * Handles user registration with the provided username and password.
+     * Handles user registration with the provided information.
      * @param username The username entered by the user.
      * @param password The password entered by the user.
+     * @param firstName The first name entered by the user.
+     * @param lastName The last name entered by the user.
      */
-    private void handleRegister(String username, String password) {
-        boolean success = userController.register(username, password);
-        if (success) {
-            showLoginScene();
+    private void handleRegister(String username, String password, String firstName, String lastName) {
+        User user = userController.register(username, password, firstName, lastName);
+        if (user != null) {
+            currentUser = user;
+            showHomeScene();
         } else {
-            showErrorAlert("Registration failed. Username may be taken.");
+            showErrorAlert("Registration failed. Please try again.");
         }
     }
+
 
     /**
      * Handles the edit profile action by updating the user's first and last name and saving the changes.

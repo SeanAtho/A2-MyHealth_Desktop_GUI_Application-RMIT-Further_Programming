@@ -11,6 +11,7 @@ public class HealthRecord {
     private String bloodPressure;
     private String note;
     private LocalDate date;
+    private String userId;
 
     public HealthRecord(float weight, float temperature, String bloodPressure, String note, LocalDate date) {
         this.weight = weight;
@@ -108,5 +109,13 @@ public class HealthRecord {
      */
     public LocalDate getDate() {
         return date;
+    }
+
+    /**
+     * Gets the user ID associated with this health record.
+     * @return The user ID as a string.
+     */
+    public String getUserId() {
+        return userId;
     }
 }
