@@ -3,8 +3,13 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import model.User;
 
 public class Database {
 
@@ -52,5 +57,33 @@ public class Database {
         return connection;
     }
 
-    // Implement other methods for database operations (select, insert, update, delete)
+    public void addUser(User user) throws SQLException {
+        String sql = "INSERT INTO users (firstName, lastName, username, password) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, user.getFirstName());
+            pstmt.setString(2, user.getLastName());
+            pstmt.setString(3, user.getUsername());
+            pstmt.setString(4, user.getPassword());
+            pstmt.executeUpdate();
+        }
+    }
+
+    public List<User> getAllUsers() throws SQLException {
+        String sql = "SELECT * FROM users";
+        List<User> users = new ArrayList<>();
+
+        try (Statement stmt  = connection.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            while (rs.next()) {
+                User user = new User(rs.getInt("id"), rs.getString("username"), 
+                                     rs.getString("password"), rs.getString("firstName"), 
+                                     rs.getString("lastName"));
+                users.add(user);
+            }
+        }
+
+        return users;
+    }
 }

@@ -103,12 +103,13 @@ public class UserController {
             pstmt.setString(2, updatedUser.getPassword());
             pstmt.setString(3, updatedUser.getFirstName());
             pstmt.setString(4, updatedUser.getLastName());
-            pstmt.setInt(5, updatedUser.getId());
+            pstmt.setString(5, updatedUser.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Deletes the profile of an existing user.
@@ -119,12 +120,13 @@ public class UserController {
         String sql = "DELETE FROM users WHERE id = ?";
 
         try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
-            pstmt.setInt(1, user.getId());
+            pstmt.setString(1, user.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Gets a list of all users.
