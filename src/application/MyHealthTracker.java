@@ -2,7 +2,7 @@ package application;
 
 import controller.HealthRecordController;
 import controller.UserController;
-import controller.Database;
+import database.Database;
 import view.MyHealthTrackerView;
 import javafx.application.Application;
 import javafx.stage.Stage;

@@ -2,6 +2,8 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import database.Database;
 import model.User;
 
 /**
@@ -17,6 +19,9 @@ public class UserController {
      */
     public UserController() {
         users = new ArrayList<>();
+    }
+
+    public UserController(Database database) {
     }
 
     /**
