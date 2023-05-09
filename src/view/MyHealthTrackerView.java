@@ -38,9 +38,13 @@ public class MyHealthTrackerView extends Application {
     private TextField bloodPressureField;
     private TextArea noteField;
     private TableView<HealthRecord> recordsTable;
+    private HealthRecord selectedRecord;
     private Label fullNameLabel;
     private TextField firstNameField;
     private TextField lastNameField;
+    private Scene registerScene;
+
+
     public MyHealthTrackerView(Stage primaryStage, UserController userController, HealthRecordController healthRecordController) {
         this.primaryStage = primaryStage;
         this.userController = userController;
@@ -134,7 +138,8 @@ public class MyHealthTrackerView extends Application {
         ));
         backButton.setOnAction(e -> showLoginScene());
 
-        new Scene(registerForm, 300, 400);
+        // Create the scene and add it to the primary stage
+        registerScene = new Scene(registerForm, 300, 400);
     }
 
 
@@ -178,6 +183,7 @@ public class MyHealthTrackerView extends Application {
     * Initializes the home scene with UI components and event handlers.
     */
     private void initHomeScene() {
+        Label welcomeLabel = new Label("Welcome, ");
         Button profileButton = new Button("Edit Profile");
         Button recordsButton = new Button("View Records");
         Button exportButton = new Button("Export Records");
