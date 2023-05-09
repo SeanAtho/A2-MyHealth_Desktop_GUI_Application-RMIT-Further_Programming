@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 
 import model.HealthRecord;
 import model.User;
+import database.Database;
 
 public class HealthRecordController {
     private List<HealthRecord> healthRecords;
+    private Database database; // Add a Database attribute
 
-    public HealthRecordController() {
+    public HealthRecordController(Database database) {
         this.healthRecords = new ArrayList<>();
+        this.database = database; // Initialize the Database attribute
     }
 
     /**

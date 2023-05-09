@@ -4,7 +4,6 @@ import controller.UserController;
 import controller.HealthRecordController;
 import model.User;
 import model.HealthRecord;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,7 +18,7 @@ import java.io.IOException;
 /**
  * This class is the main view for the My Health Tracker application.
  */
-public class MyHealthTrackerView extends Application {
+public class MyHealthTrackerView {
 
     private Stage primaryStage;
     private UserController userController;
@@ -38,7 +37,6 @@ public class MyHealthTrackerView extends Application {
     private TextField bloodPressureField;
     private TextArea noteField;
     private TableView<HealthRecord> recordsTable;
-    private HealthRecord selectedRecord;
     private Label fullNameLabel;
     private TextField firstNameField;
     private TextField lastNameField;
@@ -62,48 +60,7 @@ public class MyHealthTrackerView extends Application {
         initCreateRecordScene();
         initEditRecordScene();
     }
-    
 
-    /**
-     * Main method to launch the application.
-     *
-     * @param args command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    /**
-     * The start method is called after the init() method has returned,
-     * and after the system is ready for the application to begin running.
-     *
-     * @param primaryStage the primary stage for this application
-     */
-    @Override
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("My Health Tracker");
-
-        // Initialize controllers
-        this.userController = new UserController();
-        this.healthRecordController = new HealthRecordController();
-
-        initComponents();
-        showLoginScene();
-    }
-
-    /**
-     * Initializes all the components for the application.
-     */
-    private void initComponents() {
-        initLoginScene();
-        initRegisterScene();
-        initHomeScene();
-        initProfileScene();
-        initRecordsScene();
-        initCreateRecordScene();
-        initEditRecordScene();
-    }
 
     // Initialization methods for loginScene, homeScene, and other scenes remain unchanged
 
@@ -183,7 +140,7 @@ public class MyHealthTrackerView extends Application {
     * Initializes the home scene with UI components and event handlers.
     */
     private void initHomeScene() {
-        Label welcomeLabel = new Label("Welcome, ");
+        fullNameLabel = new Label("");
         Button profileButton = new Button("Edit Profile");
         Button recordsButton = new Button("View Records");
         Button exportButton = new Button("Export Records");
