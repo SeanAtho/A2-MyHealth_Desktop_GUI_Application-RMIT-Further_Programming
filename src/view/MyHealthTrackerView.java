@@ -325,7 +325,7 @@ public class MyHealthTrackerView extends Application {
     /**
     * Sets the current scene to the login scene.
     */
-    private void showLoginScene() {
+    public void showLoginScene() {
         primaryStage.setScene(loginScene);
     }
 
