@@ -129,23 +129,24 @@ public class Database {
     
     public HealthRecord getHealthRecord(int id) throws SQLException {
         String sql = "SELECT * FROM health_records WHERE id = ?";
-
+    
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
-
+    
             if (rs.next()) {
                 return new HealthRecord(
+                    rs.getInt("id"),  // Add this line if you have an 'id' field in your HealthRecord class
                     rs.getFloat("weight"),
                     rs.getFloat("temperature"),
-                    rs.getString("bloodPressure"),
+                    rs.getString("blood_pressure"),  // Note: 'bloodPressure' -> 'blood_pressure'
                     rs.getString("note"),
                     rs.getDate("date").toLocalDate(),
-                    rs.getInt("userId")
+                    rs.getInt("user_id")  // Note: 'userId' -> 'user_id'
                 );
             }
         }
-
+    
         return null;  // Return null if no health record found for the given id
     }
     
@@ -175,26 +176,28 @@ public class Database {
     
     public List<HealthRecord> getAllHealthRecords(int userId) throws SQLException {
         List<HealthRecord> records = new ArrayList<>();
-        String sql = "SELECT * FROM health_records WHERE userId = ?";
-
+        String sql = "SELECT * FROM health_records WHERE user_id = ?";  // Note: 'userId' -> 'user_id'
+    
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
-
+    
             while (rs.next()) {
                 records.add(new HealthRecord(
+                    rs.getInt("id"),  // Add this line if you have an 'id' field in your HealthRecord class
                     rs.getFloat("weight"),
                     rs.getFloat("temperature"),
-                    rs.getString("bloodPressure"),
+                    rs.getString("blood_pressure"),  // Note: 'bloodPressure' -> 'blood_pressure'
                     rs.getString("note"),
                     rs.getDate("date").toLocalDate(),
-                    rs.getInt("userId")
+                    rs.getInt("user_id")  // Note: 'userId' -> 'user_id'
                 ));
             }
         }
-
+    
         return records;
     }
+    
     
 
     public List<User> getAllUsers() throws SQLException {

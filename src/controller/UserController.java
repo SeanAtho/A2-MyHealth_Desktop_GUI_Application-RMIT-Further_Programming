@@ -111,11 +111,12 @@ public class UserController {
      */
     public void deleteProfile(User user) {
         try {
-            database.deleteUser(user);
+            database.deleteUser(user.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Returns a list of all users in the database.
