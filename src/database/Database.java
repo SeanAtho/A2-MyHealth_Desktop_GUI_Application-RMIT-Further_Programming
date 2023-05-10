@@ -1,14 +1,17 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.HealthRecord;
 import model.User;
 
 public class Database {
@@ -68,6 +71,131 @@ public class Database {
             pstmt.executeUpdate();
         }
     }
+
+
+    public User getUser(int id) throws SQLException {
+        String sql = "SELECT * FROM users WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return new User(rs.getInt("id"), rs.getString("username"), 
+                                rs.getString("password"), rs.getString("firstName"), 
+                                rs.getString("lastName"));
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public void updateUser(User user) throws SQLException {
+        String sql = "UPDATE users SET firstName = ?, lastName = ?, username = ?, password = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, user.getFirstName());
+            pstmt.setString(2, user.getLastName());
+            pstmt.setString(3, user.getUsername());
+            pstmt.setString(4, user.getPassword());
+            pstmt.setInt(5, user.getId());
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void deleteUser(int id) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    public void addHealthRecord(HealthRecord record) throws SQLException {
+        String sql = "INSERT INTO health_records(weight, temperature, bloodPressure, note, date, userId) VALUES(?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setFloat(1, record.getWeight());
+            pstmt.setFloat(2, record.getTemperature());
+            pstmt.setString(3, record.getBloodPressure());
+            pstmt.setString(4, record.getNote());
+            pstmt.setDate(5, Date.valueOf(record.getDate()));
+            pstmt.setInt(6, record.getUserId());
+            pstmt.executeUpdate();
+        }
+    }
+    
+    public HealthRecord getHealthRecord(int id) throws SQLException {
+        String sql = "SELECT * FROM health_records WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new HealthRecord(
+                    rs.getFloat("weight"),
+                    rs.getFloat("temperature"),
+                    rs.getString("bloodPressure"),
+                    rs.getString("note"),
+                    rs.getDate("date").toLocalDate(),
+                    rs.getInt("userId")
+                );
+            }
+        }
+
+        return null;  // Return null if no health record found for the given id
+    }
+    
+    public void updateHealthRecord(HealthRecord record) throws SQLException {
+        String sql = "UPDATE health_records SET weight = ?, temperature = ?, bloodPressure = ?, note = ?, date = ?, userId = ? WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setFloat(1, record.getWeight());
+            pstmt.setFloat(2, record.getTemperature());
+            pstmt.setString(3, record.getBloodPressure());
+            pstmt.setString(4, record.getNote());
+            pstmt.setDate(5, Date.valueOf(record.getDate()));
+            pstmt.setInt(6, record.getUserId());
+            pstmt.setInt(7, record.getId());  // Assume you have getId() in your HealthRecord class
+            pstmt.executeUpdate();
+        }
+    }
+    
+    public void deleteHealthRecord(int id) throws SQLException {
+        String sql = "DELETE FROM health_records WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        }
+    }
+    
+    public List<HealthRecord> getAllHealthRecords(int userId) throws SQLException {
+        List<HealthRecord> records = new ArrayList<>();
+        String sql = "SELECT * FROM health_records WHERE userId = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                records.add(new HealthRecord(
+                    rs.getFloat("weight"),
+                    rs.getFloat("temperature"),
+                    rs.getString("bloodPressure"),
+                    rs.getString("note"),
+                    rs.getDate("date").toLocalDate(),
+                    rs.getInt("userId")
+                ));
+            }
+        }
+
+        return records;
+    }
+    
 
     public List<User> getAllUsers() throws SQLException {
         String sql = "SELECT * FROM users";

@@ -7,7 +7,7 @@ import java.util.Objects;
  * It contains attributes such as id, username, password, first name, and last name.
  */
 public class User {
-    private String id;
+    private int id; // changed from String to int
     private String username;
     private String password;
     private String firstName;
@@ -23,7 +23,7 @@ public class User {
      * @param lastName  the last name of the user.
      */
     public User(int id, String username, String password, String firstName, String lastName) {
-        this.id = Integer.toString(id);;
+        this.id = id; // removed conversion to String
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -36,7 +36,7 @@ public class User {
      *
      * @return the id of the user.
      */
-    public String getId() {
+    public int getId() { // changed return type from String to int
         return id;
     }
 
@@ -45,7 +45,7 @@ public class User {
      *
      * @param id the new id.
      */
-    public void setId(String id) {
+    public void setId(int id) { // changed parameter type from String to int
         this.id = id;
     }
 

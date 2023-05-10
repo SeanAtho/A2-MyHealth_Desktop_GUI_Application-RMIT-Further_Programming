@@ -16,6 +16,8 @@ public class UserController {
 
     /**
      * Constructor for UserController class.
+     *
+     * @param database the Database object to be used by this controller
      */
     public UserController(Database database) {
         this.database = database;
@@ -24,8 +26,8 @@ public class UserController {
     /**
      * Returns the User object with the provided username.
      *
-     * @param username The username of the user to find.
-     * @return The User object with the provided username, or null if not found.
+     * @param username the username of the user to find
+     * @return the User object with the provided username, or null if not found
      */
     public User getUserByUsername(String username) {
         User user = null;
@@ -36,7 +38,9 @@ public class UserController {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"));
+                user = new User(rs.getInt("id"), rs.getString("username"), 
+                                rs.getString("password"), rs.getString("firstName"), 
+                                rs.getString("lastName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,11 +52,11 @@ public class UserController {
     /**
      * Registers a new user with the given username and password.
      *
-     * @param username  The desired username for the new user.
-     * @param password  The desired password for the new user.
-     * @param firstName The first name of the new user.
-     * @param lastName  The last name of the new user.
-     * @return The newly registered User object or null if the registration failed.
+     * @param username  the desired username for the new user
+     * @param password  the desired password for the new user
+     * @param firstName the first name of the new user
+     * @param lastName  the last name of the new user
+     * @return the newly registered User object or null if the registration failed
      */
     public User register(String username, String password, String firstName, String lastName) {
         User user = getUserByUsername(username);
@@ -62,19 +66,16 @@ public class UserController {
             return null;
         }
 
-        String sql = "INSERT INTO users(username, password, firstName, lastName) VALUES(?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, firstName);
-            pstmt.setString(4, lastName);
-            pstmt.executeUpdate();
+        try {
+            user = new User(-1, username, password, firstName, lastName);
+            database.addUser(user);
+            user = getUserByUsername(username);  // Get the user again to retrieve the assigned ID
         } catch (SQLException e) {
             e.printStackTrace();
+            user = null;
         }
 
-        return getUserByUsername(username);
+        return user;
     }
 
     /**
@@ -93,23 +94,15 @@ public class UserController {
     /**
      * Updates the information of the given user.
      *
-     * @param updatedUser The User object containing the updated user information.
+     * @param updatedUser the User object containing the updated user information
      */
     public void updateUser(User updatedUser) {
-        String sql = "UPDATE users SET username = ?, password = ?, firstName = ?, lastName = ? WHERE id = ?";
-
-        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
-            pstmt.setString(1, updatedUser.getUsername());
-            pstmt.setString(2, updatedUser.getPassword());
-            pstmt.setString(3, updatedUser.getFirstName());
-            pstmt.setString(4, updatedUser.getLastName());
-            pstmt.setString(5, updatedUser.getId());
-            pstmt.executeUpdate();
+        try {
+            database.updateUser(updatedUser);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Deletes the profile of an existing user.
@@ -117,33 +110,23 @@ public class UserController {
      * @param user the User object to be deleted
      */
     public void deleteProfile(User user) {
-        String sql = "DELETE FROM users WHERE id = ?";
-
-        try (PreparedStatement pstmt = database.getConnection().prepareStatement(sql)) {
-            pstmt.setString(1, user.getId());
-            pstmt.executeUpdate();
+        try {
+            database.deleteUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
     /**
-     * Gets a list of all users.
+     * Returns a list of all users in the database.
      *
-     * @return a list of all users
+     * @return a list of all User objects
      */
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
-
-        try (Statement stmt = database.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"));
-                users.add(user);
-            }
+        try
+        {
+            users = database.getAllUsers();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -153,6 +136,7 @@ public class UserController {
 
     /**
      * Logs out the currently logged in user.
+     * Implementation details depend on the specifics of your application.
      */
     public void logout() {
         // implementation details depend on the specifics of your application
