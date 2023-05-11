@@ -278,6 +278,7 @@ public class MyHealthTrackerView {
     */
     public void showLoginScene() {
         primaryStage.setScene(loginScene);
+        primaryStage.show();
     }
 
         /**
