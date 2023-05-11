@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,6 +14,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private List<HealthRecord> healthRecords;
 
     /**
      * Constructor for the User class.
@@ -28,9 +31,10 @@ public class User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.healthRecords = new ArrayList<>();
     }
     
-
+    
     /**
      * Returns the id of the user.
      *
@@ -161,5 +165,13 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, firstName, lastName);
+    }
+
+    public void addHealthRecord(HealthRecord record) {
+        this.healthRecords.add(record);
+    }
+
+    public List<HealthRecord> getHealthRecords() {
+        return this.healthRecords;
     }
 }

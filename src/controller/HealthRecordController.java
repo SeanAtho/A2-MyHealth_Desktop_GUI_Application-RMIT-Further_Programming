@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,32 +19,35 @@ public class HealthRecordController {
         this.database = database; // Initialize the Database attribute
     }
 
-    /**
-     * Adds a health record to the list of health records.
-     *
-     * @param record the health record to add
-     */
-    public void addHealthRecord(HealthRecord record) {
+    public void addHealthRecord(User user, HealthRecord record) {
+        user.addHealthRecord(record);
         healthRecords.add(record);
+        try {
+            database.addHealthRecord(record);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * Deletes a health record from the list of health records.
-     *
-     * @param record the health record to delete
-     */
     public void deleteHealthRecord(HealthRecord record) {
         healthRecords.remove(record);
+        try {
+            database.deleteHealthRecord(record.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+    
 
-    /**
-     * Returns a list of all health records.
-     *
-     * @return the list of all health records
-     */
-    public List<HealthRecord> getHealthRecords() {
-        return healthRecords;
+    public List<HealthRecord> getHealthRecordsForUser(User user) {
+        try {
+            return database.getAllHealthRecords(user.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
+    
 
     /**
      * Searches for a health record with the given date.
@@ -52,25 +56,9 @@ public class HealthRecordController {
      * @return the health record with the given date, or null if not found
      */
     public HealthRecord searchRecord(LocalDate date) {
-        for (HealthRecord record : healthRecords) {
-            if (record.getDate().equals(date)) {
-                return record;
-            }
-        }
-        return null;
+        return database.getRecordByDate(date);
     }
 
-    /**
-     * Gets the health records for the specified user.
-     *
-     * @param user the user whose health records are to be retrieved
-     * @return a list of health records for the specified user
-     */
-    public List<HealthRecord> getHealthRecordsForUser(User user) {
-        return healthRecords.stream()
-                .filter(record -> record.getUserId() == user.getId())
-                .collect(Collectors.toList());
-    }
 
     
 }

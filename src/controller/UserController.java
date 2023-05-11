@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database.Database;
+import model.HealthRecord;
 import model.User;
 
 /**
@@ -12,16 +13,21 @@ import model.User;
  */
 public class UserController {
 
+    private User currentUser;
     private Database database;
+    private HealthRecordController healthRecordController;
 
     /**
      * Constructor for UserController class.
      *
      * @param database the Database object to be used by this controller
+     * @param healthRecordController the HealthRecordController object to be used by this controller
      */
-    public UserController(Database database) {
+    public UserController(Database database, HealthRecordController healthRecordController) {
         this.database = database;
+        this.healthRecordController = healthRecordController;
     }
+
 
     /**
      * Returns the User object with the provided username.
@@ -87,8 +93,15 @@ public class UserController {
      */
     public boolean login(String username, String password) {
         User user = getUserByUsername(username);
+        if (user != null && user.getPassword().equals(password)) {
+            this.currentUser = user; // set the current user after successful login
+            return true;
+        }
+        return false;
+    }
 
-        return user != null && user.getPassword().equals(password);
+    public void addHealthRecordToCurrentUser(HealthRecord record) {
+        healthRecordController.addHealthRecord(currentUser, record);
     }
 
     /**

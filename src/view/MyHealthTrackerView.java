@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This class is the main view for the My Health Tracker application.
@@ -188,7 +189,7 @@ public class MyHealthTrackerView {
     * Initializes the records scene with UI components and event handlers.
     */
     private void initRecordsScene() {
-        TableView<HealthRecord> recordsTable = new TableView<>();
+        recordsTable = new TableView<>();
         Button addButton = new Button("Add");
         Button editButton = new Button("Edit");
         Button deleteButton = new Button("Delete");
@@ -364,8 +365,26 @@ public class MyHealthTrackerView {
      * Updates the records table with the current user's health records.
      */
     private void updateRecordTable() {
-        recordsTable.setItems(FXCollections.observableArrayList(healthRecordController.getHealthRecordsForUser(currentUser)));
+        if (recordsTable == null) {
+            System.out.println("recordsTable is null");
+            return;
+        }
+        if (healthRecordController == null) {
+            System.out.println("healthRecordController is null");
+            return;
+        }
+        if (currentUser == null) {
+            System.out.println("currentUser is null");
+            return;
+        }
+        List<HealthRecord> healthRecords = healthRecordController.getHealthRecordsForUser(currentUser);
+        if (healthRecords == null) {
+            System.out.println("getHealthRecordsForUser returned null");
+            return;
+        }
+        recordsTable.setItems(FXCollections.observableArrayList(healthRecords));
     }
+    
 
 
     /**
