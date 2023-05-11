@@ -1,6 +1,7 @@
 package view;
 
 import controller.UserController;
+import database.Database;
 import controller.HealthRecordController;
 import model.User;
 import model.HealthRecord;
@@ -14,6 +15,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -27,7 +30,8 @@ public class MyHealthTrackerView {
     private User currentUser;
     private Scene loginScene;
     private Scene homeScene;
-
+    private Database database;
+   
     // Additional scenes and UI components
     private Scene profileScene;
     private Scene recordsScene;
@@ -48,6 +52,7 @@ public class MyHealthTrackerView {
         this.primaryStage = primaryStage;
         this.userController = userController;
         this.healthRecordController = healthRecordController;
+        this.database = new Database();
         
         // Set the title for the primary stage
         this.primaryStage.setTitle("My Health Tracker");
@@ -222,7 +227,7 @@ public class MyHealthTrackerView {
         Button saveButton = new Button("Save");
         Button backButton = new Button("Back");
 
-        saveButton.setOnAction(e -> handleAddRecord());
+        saveButton.setOnAction(e -> handleSaveRecord());
         backButton.setOnAction(e -> showRecordsScene());
 
         GridPane grid = createRecordGridPane();
@@ -332,6 +337,9 @@ public class MyHealthTrackerView {
         temperatureField.clear();
         bloodPressureField.clear();
         noteField.clear();
+        Button saveButton = new Button("Save");
+        saveButton.setOnAction(e -> handleSaveRecord());
+    
         primaryStage.setScene(createRecordScene);
     }
 
@@ -447,7 +455,37 @@ public class MyHealthTrackerView {
         showCreateRecordScene();
     }
 
+    private void handleSaveRecord() {
+        try {
+            // Get data from input fields
+            String weightText = weightField.getText();
+            String temperatureText = temperatureField.getText();
+            
+            float weight = weightText.isEmpty() ? 0 : Float.parseFloat(weightText);
+            float temperature = temperatureText.isEmpty() ? 0 : Float.parseFloat(temperatureText);
+            
+            String bloodPressure = bloodPressureField.getText();
+            String note = noteField.getText();
+            LocalDate date = LocalDate.now(); // or get this from an input field if you have one
+            int userId = currentUser.getId(); // or however you're keeping track of the current user
     
+            // Create a new HealthRecord object
+            HealthRecord newRecord = new HealthRecord(0, weight, temperature, bloodPressure, note, date, userId);
+    
+            // Use the Database class to add the new record to the database
+            database.addHealthRecord(newRecord);
+    
+            // Optionally, switch back to the previous scene or clear the input fields
+            showHomeScene();
+        } catch (SQLException e) {
+            // Handle any errors that might occur when trying to access the database
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+
     /**
      * Handles the Edit Record button click event, showing the Edit Record scene.
      */
