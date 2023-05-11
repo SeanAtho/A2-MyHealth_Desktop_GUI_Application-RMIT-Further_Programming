@@ -42,7 +42,7 @@ public class Database {
 
         String createRecordTable = "CREATE TABLE IF NOT EXISTS health_records (" +
                 "id INTEGER PRIMARY KEY," +
-                "userId INTEGER," +
+                "user_id INTEGER," +  // Note: 'userId' -> 'user_id'
                 "weight REAL," +
                 "temperature REAL," +
                 "bloodPressure TEXT," +
@@ -114,7 +114,7 @@ public class Database {
 
 
     public void addHealthRecord(HealthRecord record) throws SQLException {
-        String sql = "INSERT INTO health_records(weight, temperature, bloodPressure, note, date, userId) VALUES(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO health_records(weight, temperature, bloodPressure, note, date, user_id) VALUES(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setFloat(1, record.getWeight());

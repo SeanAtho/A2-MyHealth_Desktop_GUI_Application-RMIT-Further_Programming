@@ -24,8 +24,8 @@ public class MyHealthTracker extends Application {
     public void start(Stage primaryStage) {
         // Initialize the controllers, the database, and the view
         database = new Database();
-        userController = new UserController(database);
         healthRecordController = new HealthRecordController(database);
+        userController = new UserController(database, healthRecordController);
         MyHealthTrackerView view = new MyHealthTrackerView(primaryStage, userController, healthRecordController);
 
         // Show the login scene

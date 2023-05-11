@@ -482,11 +482,11 @@ public class MyHealthTrackerView {
         fileChooser.setTitle("Export Records");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showSaveDialog(primaryStage);
-
+    
         if (file != null) {
             try {
                 FileWriter writer = new FileWriter(file);
-                for (HealthRecord record : healthRecordController.getHealthRecords()) {
+                for (HealthRecord record : healthRecordController.getHealthRecordsForUser(currentUser)) {
                     writer.write(record.toString() + System.lineSeparator());
                 }
                 writer.close();
@@ -495,6 +495,8 @@ public class MyHealthTrackerView {
             }
         }
     }
+    
+    
 
 
 }
