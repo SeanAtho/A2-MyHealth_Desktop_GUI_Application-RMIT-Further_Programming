@@ -64,6 +64,35 @@ public class MyHealthTrackerView {
 
     // Initialization methods for loginScene, homeScene, and other scenes remain unchanged
 
+        /**
+     * Initializes the login scene with UI components and event handlers.
+     */
+    private void initLoginScene() {
+        TextField usernameField = new TextField();
+        PasswordField passwordField = new PasswordField();
+        Button loginButton = new Button("Login");
+        Button goToRegisterButton = new Button("Register");
+
+        // Set event handlers for the buttons
+        loginButton.setOnAction(e -> handleLogin(usernameField.getText(), passwordField.getText()));
+        goToRegisterButton.setOnAction(e -> primaryStage.setScene(registerScene));
+
+        // Create and configure the GridPane layout
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("Username:"), 0, 0);
+        grid.add(usernameField, 1, 0);
+        grid.add(new Label("Password:"), 0, 1);
+        grid.add(passwordField, 1, 1);
+        grid.add(loginButton, 0, 2);
+        grid.add(goToRegisterButton, 1, 2);
+
+        // Set the GridPane as the root of the loginScene
+        loginScene = new Scene(grid, 300, 175); // Adjusted the height for fewer fields
+    }
+
     /**
      * Initializes the register scene.
      */
@@ -71,11 +100,11 @@ public class MyHealthTrackerView {
         // Create the UI elements for the register scene
         VBox registerForm = new VBox(10);
         TextField usernameField = new TextField();
-        TextField passwordField = new TextField();
+        PasswordField passwordField = new PasswordField();
         TextField firstNameField = new TextField();
         TextField lastNameField = new TextField();
         Button registerButton = new Button("Register");
-        Button backButton = new Button("Back");
+        Button backButton = new Button("Back to Login");
 
         // Add the UI elements to the VBox
         registerForm.getChildren().addAll(
@@ -93,48 +122,13 @@ public class MyHealthTrackerView {
             firstNameField.getText(),
             lastNameField.getText()
         ));
-        backButton.setOnAction(e -> showLoginScene());
+        backButton.setOnAction(e -> primaryStage.setScene(loginScene));
 
         // Create the scene and add it to the primary stage
-        registerScene = new Scene(registerForm, 300, 400);
+        registerScene = new Scene(registerForm, 300, 275);
     }
 
 
-    /**
-    * Initializes the login scene with UI components and event handlers.
-    */
-    private void initLoginScene() {
-        TextField usernameField = new TextField();
-        PasswordField passwordField = new PasswordField();
-        Button loginButton = new Button("Login");
-        Button registerButton = new Button("Register");
-
-        // Set event handlers for the buttons
-        loginButton.setOnAction(e -> handleLogin(usernameField.getText(), passwordField.getText()));
-        registerButton.setOnAction(e -> {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String firstName = firstNameField.getText(); // Replace with the actual TextField object for the first name
-        String lastName = lastNameField.getText(); // Replace with the actual TextField object for the last name
-        handleRegister(username, password, firstName, lastName);
-        });
-
-
-        // Create and configure the GridPane layout
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.add(new Label("Username:"), 0, 0);
-        grid.add(usernameField, 1, 0);
-        grid.add(new Label("Password:"), 0, 1);
-        grid.add(passwordField, 1, 1);
-        grid.add(loginButton, 0, 2);
-        grid.add(registerButton, 1, 2);
-
-        // Set the GridPane as the root of the loginScene
-        loginScene = new Scene(grid, 300, 200);
-    }
 
     /**
     * Initializes the home scene with UI components and event handlers.
@@ -405,6 +399,8 @@ public class MyHealthTrackerView {
             showErrorAlert("Registration failed. Please try again.");
         }
     }
+
+
 
 
     /**
