@@ -53,6 +53,11 @@ public class MyHealthTrackerView {
         this.userController = userController;
         this.healthRecordController = healthRecordController;
         this.database = new Database();
+
+        weightField = new TextField();
+        temperatureField = new TextField();
+        bloodPressureField = new TextField();
+        noteField = new TextArea();
         
         // Set the title for the primary stage
         this.primaryStage.setTitle("My Health Tracker");
@@ -165,15 +170,15 @@ public class MyHealthTrackerView {
     * Initializes the profile scene with UI components and event handlers.
     */
     private void initProfileScene() {
-        TextField firstNameField = new TextField();
-        TextField lastNameField = new TextField();
+        firstNameField = new TextField();
+        lastNameField = new TextField();
         Button saveButton = new Button("Save");
         Button backButton = new Button("Back");
-
+    
         // Set event handlers for the buttons
         saveButton.setOnAction(e -> handleEditProfile());
         backButton.setOnAction(e -> showHomeScene());
-
+    
         // Create and configure the GridPane layout
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -185,10 +190,11 @@ public class MyHealthTrackerView {
         grid.add(lastNameField, 1, 1);
         grid.add(saveButton, 0, 2);
         grid.add(backButton, 1, 2);
-
+    
         // Set the GridPane as the root of the profileScene
         profileScene = new Scene(grid, 300, 200);
     }
+    
 
     /**
     * Initializes the records scene with UI components and event handlers.
@@ -220,17 +226,26 @@ public class MyHealthTrackerView {
      * Initializes the create record scene with UI components and event handlers.
      */
     private void initCreateRecordScene() {
-        weightField = new TextField();
-        temperatureField = new TextField();
-        bloodPressureField = new TextField();
-        noteField = new TextArea();
-        Button saveButton = new Button("Save");
-        Button backButton = new Button("Back");
+        weightField.clear();
+        temperatureField.clear();
+        bloodPressureField.clear();
+        noteField.clear();
 
+        Button saveButton = new Button("Save");
         saveButton.setOnAction(e -> handleSaveRecord());
+
+        Button backButton = new Button("Back");
         backButton.setOnAction(e -> showRecordsScene());
 
-        GridPane grid = createRecordGridPane();
+        GridPane grid = new GridPane();
+        grid.add(new Label("Weight:"), 0, 0);
+        grid.add(weightField, 1, 0);
+        grid.add(new Label("Temperature:"), 0, 1);
+        grid.add(temperatureField, 1, 1);
+        grid.add(new Label("Blood Pressure:"), 0, 2);
+        grid.add(bloodPressureField, 1, 2);
+        grid.add(new Label("Note:"), 0, 3);
+        grid.add(noteField, 1, 3);
         grid.add(saveButton, 0, 4);
         grid.add(backButton, 1, 4);
 
@@ -241,10 +256,12 @@ public class MyHealthTrackerView {
      * Initializes the edit record scene with UI components and event handlers.
      */
     private void initEditRecordScene() {
-        weightField = new TextField();
-        temperatureField = new TextField();
-        bloodPressureField = new TextField();
-        noteField = new TextArea();
+
+        weightField.clear();
+        temperatureField.clear();
+        bloodPressureField.clear();
+        noteField.clear();
+      
         Button saveButton = new Button("Save");
         Button backButton = new Button("Back");
 
@@ -330,18 +347,13 @@ public class MyHealthTrackerView {
 
 
     /**
-    * Displays the create record scene on the primary stage.
-    */
+     * Displays the create record scene on the primary stage.
+     */
     private void showCreateRecordScene() {
-        weightField.clear();
-        temperatureField.clear();
-        bloodPressureField.clear();
-        noteField.clear();
-        Button saveButton = new Button("Save");
-        saveButton.setOnAction(e -> handleSaveRecord());
-    
+        initCreateRecordScene();
         primaryStage.setScene(createRecordScene);
     }
+
 
     /**
      * Displays the edit record scene on the primary stage with the given record's data.
@@ -460,12 +472,19 @@ public class MyHealthTrackerView {
             // Get data from input fields
             String weightText = weightField.getText();
             String temperatureText = temperatureField.getText();
-            
+            String bloodPressure = bloodPressureField.getText();
+            String note = noteField.getText();
+
+            // Debugging output
+            System.out.println("Weight: " + weightText);
+            System.out.println("Temperature: " + temperatureText);
+            System.out.println("Blood Pressure: " + bloodPressure);
+            System.out.println("Note: " + note);
+        
+            // Convert the strings to floats
             float weight = weightText.isEmpty() ? 0 : Float.parseFloat(weightText);
             float temperature = temperatureText.isEmpty() ? 0 : Float.parseFloat(temperatureText);
             
-            String bloodPressure = bloodPressureField.getText();
-            String note = noteField.getText();
             LocalDate date = LocalDate.now(); // or get this from an input field if you have one
             int userId = currentUser.getId(); // or however you're keeping track of the current user
     
@@ -474,14 +493,24 @@ public class MyHealthTrackerView {
     
             // Use the Database class to add the new record to the database
             database.addHealthRecord(newRecord);
+
+            // Clear the fields after successfully saving the record
+            weightField.clear();
+            temperatureField.clear();
+            bloodPressureField.clear();
+            noteField.clear();
     
             // Optionally, switch back to the previous scene or clear the input fields
             showHomeScene();
         } catch (SQLException e) {
             // Handle any errors that might occur when trying to access the database
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            // Handle any errors that might occur when converting the strings to floats
+            e.printStackTrace();
         }
     }
+    
     
     
     

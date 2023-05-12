@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,18 +115,19 @@ public class Database {
 
 
     public void addHealthRecord(HealthRecord record) throws SQLException {
-        String sql = "INSERT INTO health_records(weight, temperature, bloodPressure, note, date, user_id) VALUES(?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO health_records(user_id, weight, temperature, bloodPressure, note, date) VALUES(?, ?, ?, ?, ?, ?)";
+    
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setFloat(1, record.getWeight());
-            pstmt.setFloat(2, record.getTemperature());
-            pstmt.setString(3, record.getBloodPressure());
-            pstmt.setString(4, record.getNote());
-            pstmt.setDate(5, Date.valueOf(record.getDate()));
-            pstmt.setInt(6, record.getUserId());
+            pstmt.setInt(1, record.getUserId());
+            pstmt.setFloat(2, record.getWeight());
+            pstmt.setFloat(3, record.getTemperature());
+            pstmt.setString(4, record.getBloodPressure());
+            pstmt.setString(5, record.getNote());
+            pstmt.setDate(6, Date.valueOf(record.getDate()));
             pstmt.executeUpdate();
         }
     }
+    
     
     public HealthRecord getHealthRecord(int id) throws SQLException {
         String sql = "SELECT * FROM health_records WHERE id = ?";
@@ -176,21 +178,25 @@ public class Database {
     
     public List<HealthRecord> getAllHealthRecords(int userId) throws SQLException {
         List<HealthRecord> records = new ArrayList<>();
-        String sql = "SELECT * FROM health_records WHERE user_id = ?";  // Note: 'userId' -> 'user_id'
+        String sql = "SELECT * FROM health_records WHERE user_id = ?";
     
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
     
             while (rs.next()) {
+                long timestamp = rs.getLong("date");
+                Date date = new Date(timestamp);
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                
                 records.add(new HealthRecord(
-                    rs.getInt("id"),  // Add this line if you have an 'id' field in your HealthRecord class
+                    rs.getInt("id"),
                     rs.getFloat("weight"),
                     rs.getFloat("temperature"),
-                    rs.getString("blood_pressure"),  // Note: 'bloodPressure' -> 'blood_pressure'
+                    rs.getString("bloodPressure"),
                     rs.getString("note"),
-                    rs.getDate("date").toLocalDate(),
-                    rs.getInt("user_id")  // Note: 'userId' -> 'user_id'
+                    localDate,
+                    rs.getInt("user_id")
                 ));
             }
         }
@@ -199,7 +205,6 @@ public class Database {
     }
     
     
-
     public List<User> getAllUsers() throws SQLException {
         String sql = "SELECT * FROM users";
         List<User> users = new ArrayList<>();
