@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,8 +185,10 @@ public class Database {
     
             while (rs.next()) {
                 long timestamp = rs.getLong("date");
-                Date date = new Date(timestamp);
-                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                java.sql.Date date = new java.sql.Date(timestamp);
+                LocalDate localDate = date.toLocalDate();
+
+
                 
                 records.add(new HealthRecord(
                     rs.getInt("id"),

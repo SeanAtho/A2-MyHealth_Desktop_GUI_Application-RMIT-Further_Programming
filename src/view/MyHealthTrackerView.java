@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -201,25 +202,46 @@ public class MyHealthTrackerView {
     */
     private void initRecordsScene() {
         recordsTable = new TableView<>();
+    
+        // Create columns
+        TableColumn<HealthRecord, Float> weightColumn = new TableColumn<>("Weight");
+        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
+    
+        TableColumn<HealthRecord, Float> temperatureColumn = new TableColumn<>("Temperature");
+        temperatureColumn.setCellValueFactory(new PropertyValueFactory<>("temperature"));
+    
+        TableColumn<HealthRecord, String> bloodPressureColumn = new TableColumn<>("Blood Pressure");
+        bloodPressureColumn.setCellValueFactory(new PropertyValueFactory<>("bloodPressure"));
+    
+        TableColumn<HealthRecord, String> noteColumn = new TableColumn<>("Note");
+        noteColumn.setCellValueFactory(new PropertyValueFactory<>("note"));
+    
+        TableColumn<HealthRecord, LocalDate> dateColumn = new TableColumn<>("Date");
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+    
+        // Add columns to the table
+        recordsTable.getColumns().addAll(weightColumn, temperatureColumn, bloodPressureColumn, noteColumn, dateColumn);
+    
         Button addButton = new Button("Add");
         Button editButton = new Button("Edit");
         Button deleteButton = new Button("Delete");
         Button backButton = new Button("Back");
-
+    
         // Set event handlers for the buttons
         addButton.setOnAction(e -> handleAddRecord());
         editButton.setOnAction(e -> handleEditRecord());
         deleteButton.setOnAction(e -> handleDeleteRecord());
         backButton.setOnAction(e -> showHomeScene());
-
+    
         // Create and configure the VBox layout
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(recordsTable, addButton, editButton, deleteButton, backButton);
-
+    
         // Set the VBox as the root of the recordsScene
         recordsScene = new Scene(vbox, 400, 300);
     }
+    
 
 
     /**
