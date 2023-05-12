@@ -6,16 +6,26 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MyHealthTrackerView",
+            "request": "launch",
+            "mainClass": "view.MyHealthTrackerView",
+            "projectName": "MyHealth_e19eb6fb",
+            "vmArgs": "--module-path C:\\Users\\mrsti\\OneDrive\\javafx-sdk-11\\lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
             "name": "MyHealthTracker",
             "request": "launch",
             "mainClass": "application.MyHealthTracker",
-            "projectName": "MyHealth_e19eb6fb"
+            "projectName": "MyHealth_e19eb6fb",
+            "vmArgs": "--module-path C:\\Users\\mrsti\\OneDrive\\javafx-sdk-11\\lib --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
             "name": "Current File",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "${file}",
+            "vmArgs": "--module-path C:\\Users\\mrsti\\OneDrive\\javafx-sdk-11\\lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }

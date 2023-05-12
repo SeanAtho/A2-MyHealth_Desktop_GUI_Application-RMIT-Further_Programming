@@ -6,18 +6,22 @@ import java.time.LocalDate;
  * The HealthRecord class represents a record of a patient's health information.
  */
 public class HealthRecord {
+    private int id;
     private float weight;
     private float temperature;
     private String bloodPressure;
     private String note;
     private LocalDate date;
+    private int userId;
 
-    public HealthRecord(float weight, float temperature, String bloodPressure, String note, LocalDate date) {
+    public HealthRecord(int id, float weight, float temperature, String bloodPressure, String note, LocalDate date, int userId) { 
+        this.id = id;
         this.weight = weight;
         this.temperature = temperature;
         this.bloodPressure = bloodPressure;
         this.note = note;
         this.date = date;
+        this.userId = userId;
     }
 
     /**
@@ -109,4 +113,50 @@ public class HealthRecord {
     public LocalDate getDate() {
         return date;
     }
+
+    /**
+     * Gets the user ID associated with this health record.
+     * @return The user ID as an int.  // Updated comment to reflect change to int
+     */
+    public int getUserId() {  // Changed return type from String to int
+        return userId;
+    }
+
+    /**
+     * Sets the user ID associated with this health record.
+     * @param userId The user ID as an int. 
+     */
+    public void setUserId(int userId) {  // Added setter method for userId
+        this.userId = userId;
+    }
+
+     /**
+     * Gets the unique identifier of this health record.
+     * @return The ID as an int.
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Sets the unique identifier of this health record.
+     * @param id The new ID.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "HealthRecord {" +
+                "id=" + id +
+                ", weight=" + weight +
+                ", temperature=" + temperature +
+                ", bloodPressure='" + bloodPressure + '\'' +
+                ", note='" + note + '\'' +
+                ", date=" + date +
+                ", userId=" + userId +
+                '}';
+    }
+
 }

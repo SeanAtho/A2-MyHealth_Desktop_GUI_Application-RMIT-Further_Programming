@@ -1,59 +1,53 @@
 package controller;
 
-import java.time.LocalDate;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.HealthRecord;
+import model.User;
+import database.Database;
 
 public class HealthRecordController {
-    private List<HealthRecord> healthRecords;
+    private Database database; // Add a Database attribute
 
-    public HealthRecordController() {
-        this.healthRecords = new ArrayList<>();
+    public HealthRecordController(Database database) {
+        this.database = database; // Initialize the Database attribute
     }
 
-    /**
-     * Adds a health record to the list of health records.
-     *
-     * @param record the health record to add
-     */
-    public void addHealthRecord(HealthRecord record) {
-        healthRecords.add(record);
-    }
-
-    /**
-     * Deletes a health record from the list of health records.
-     *
-     * @param record the health record to delete
-     */
-    public void deleteHealthRecord(HealthRecord record) {
-        healthRecords.remove(record);
-    }
-
-    /**
-     * Returns a list of all health records.
-     *
-     * @return the list of all health records
-     */
-    public List<HealthRecord> getHealthRecords() {
-        return healthRecords;
-    }
-
-    /**
-     * Searches for a health record with the given date.
-     *
-     * @param date the date to search for
-     * @return the health record with the given date, or null if not found
-     */
-    public HealthRecord searchRecord(LocalDate date) {
-        for (HealthRecord record : healthRecords) {
-            if (record.getDate().equals(date)) {
-                return record;
-            }
+    public void addHealthRecord(User user, HealthRecord record) {
+        try {
+            record.setUserId(user.getId()); // Set the user id of the record
+            database.addHealthRecord(record);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
+    }
+    
+    
+    public void deleteHealthRecord(HealthRecord record) {
+        try {
+            database.deleteHealthRecord(record.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateHealthRecord(HealthRecord record) {
+        try {
+            database.updateHealthRecord(record);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<HealthRecord> getHealthRecordsForUser(User user) {
+        try {
+            return database.getAllHealthRecords(user.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
 }
-    

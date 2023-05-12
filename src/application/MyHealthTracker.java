@@ -2,10 +2,10 @@ package application;
 
 import controller.HealthRecordController;
 import controller.UserController;
+import database.Database;
+import view.MyHealthTrackerView;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.User;
 
 /**
  * The main class for the MyHealthTracker application.
@@ -16,14 +16,20 @@ public class MyHealthTracker extends Application {
     private UserController userController;              // Controller for user-related actions
     private HealthRecordController healthRecordController;  // Controller for health record-related actions
     private Database database;                          // Database for storing user and health record information
-    private User currentUser;                           // The currently logged in user
     
     /**
      * The entry point for the application. Starts the JavaFX GUI.
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // TODO: implement the GUI and connect it to the controllers and database
+    public void start(Stage primaryStage) {
+        // Initialize the controllers, the database, and the view
+        database = new Database();
+        healthRecordController = new HealthRecordController(database);
+        userController = new UserController(database, healthRecordController);
+        MyHealthTrackerView view = new MyHealthTrackerView(primaryStage, userController, healthRecordController);
+
+        // Show the login scene
+        view.showLoginScene();
     }
     
     /**
