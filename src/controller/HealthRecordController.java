@@ -1,7 +1,6 @@
 package controller;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,19 +42,4 @@ public class HealthRecordController {
         }
     }
 
-    /**
-     * Searches for a health record with the given date for a specific user.
-     *
-     * @param user the user to search for
-     * @param date the date to search for
-     * @return the health record with the given date, or null if not found
-     */
-    public HealthRecord searchRecord(User user, LocalDate date) {
-        try {
-            return database.getRecordByDate(user.getId(), date);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
