@@ -3,7 +3,8 @@ package model;
 import java.time.LocalDate;
 
 /**
- * The HealthRecord class represents a record of a patient's health information.
+ * Represents a health record for a user. This includes details such as weight, temperature, 
+ * blood pressure, additional notes, date of the record, and the user associated with the record.
  */
 public class HealthRecord {
     private int id;
@@ -14,6 +15,17 @@ public class HealthRecord {
     private LocalDate date;
     private int userId;
 
+    /**
+     * Constructs a new HealthRecord instance with the provided parameters.
+     *
+     * @param id            the unique identifier of this health record
+     * @param weight        the weight of the patient
+     * @param temperature   the temperature of the patient
+     * @param bloodPressure the blood pressure of the patient
+     * @param note          additional notes about the health record
+     * @param date          the date when the health record was recorded
+     * @param userId        the unique identifier of the user associated with this health record
+     */
     public HealthRecord(int id, float weight, float temperature, String bloodPressure, String note, LocalDate date, int userId) { 
         this.id = id;
         this.weight = weight;
@@ -146,6 +158,11 @@ public class HealthRecord {
         this.id = id;
     }
 
+    /**
+     * Returns a string representation of the health record.
+     *
+     * @return a string representation of the health record
+     */
     @Override
     public String toString() {
         return "HealthRecord {" +

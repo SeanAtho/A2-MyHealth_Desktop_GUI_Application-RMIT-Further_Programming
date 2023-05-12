@@ -26,7 +26,7 @@ public class User {
      * @param lastName  the last name of the user.
      */
     public User(int id, String username, String password, String firstName, String lastName) {
-        this.id = id; // removed conversion to String
+        this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -142,10 +142,11 @@ public class User {
     }
 
     /**
-     * Determines whether two User objects are equal based on their id, username, password, first name, and last name.
+     * Checks if this user is equal to the provided object. Users are considered equal if their
+     * id, username, password, first name, and last name are all equal.
      *
-     * @param o the other object to compare to
-     * @return true if the objects are equal, false otherwise
+     * @param o the object to compare to
+     * @return true if the users are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {
@@ -158,19 +159,29 @@ public class User {
     }
 
     /**
-     * Returns a hash code for the User.
+     * Returns a hash code value for this user.
      *
-     * @return a hash code value for the object.
+     * @return a hash code value for this user
      */
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, firstName, lastName);
     }
 
+    /**
+     * Adds a health record to the user's list of health records.
+     *
+     * @param record the health record to add
+     */
     public void addHealthRecord(HealthRecord record) {
         this.healthRecords.add(record);
     }
 
+    /**
+     * Returns a list of the user's health records.
+     *
+     * @return a list of the user's health records
+     */
     public List<HealthRecord> getHealthRecords() {
         return this.healthRecords;
     }
