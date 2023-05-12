@@ -152,7 +152,7 @@ public class Database {
     }
     
     public void updateHealthRecord(HealthRecord record) throws SQLException {
-        String sql = "UPDATE health_records SET weight = ?, temperature = ?, bloodPressure = ?, note = ?, date = ?, userId = ? WHERE id = ?";
+        String sql = "UPDATE health_records SET weight = ?, temperature = ?, bloodPressure = ?, note = ?, date = ?, user_id = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setFloat(1, record.getWeight());

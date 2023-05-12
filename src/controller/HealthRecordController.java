@@ -33,6 +33,14 @@ public class HealthRecordController {
         }
     }
 
+    public void updateHealthRecord(HealthRecord record) {
+        try {
+            database.updateHealthRecord(record);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<HealthRecord> getHealthRecordsForUser(User user) {
         try {
             return database.getAllHealthRecords(user.getId());

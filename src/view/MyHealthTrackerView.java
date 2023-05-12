@@ -285,9 +285,9 @@ public class MyHealthTrackerView {
         noteField.clear();
       
         Button saveButton = new Button("Save");
-        Button backButton = new Button("Back");
+        saveButton.setOnAction(e -> handleSaveEditedRecord());
 
-        saveButton.setOnAction(e -> handleEditRecord());
+        Button backButton = new Button("Back");
         backButton.setOnAction(e -> showRecordsScene());
 
         GridPane grid = createRecordGridPane();
@@ -326,7 +326,7 @@ public class MyHealthTrackerView {
         primaryStage.show();
     }
 
-        /**
+    /**
      * Sets the current scene to the home scene.
      */
     private void showHomeScene() {
@@ -532,6 +532,44 @@ public class MyHealthTrackerView {
             e.printStackTrace();
         }
     }
+    
+    
+    private void handleSaveEditedRecord() {
+        try {
+            // Get the updated data from the fields
+            float updatedWeight = Float.parseFloat(weightField.getText());
+            float updatedTemperature = Float.parseFloat(temperatureField.getText());
+            String updatedBloodPressure = bloodPressureField.getText();
+            String updatedNote = noteField.getText();
+    
+            // Get the selected record's id
+            HealthRecord selectedRecord = recordsTable.getSelectionModel().getSelectedItem();
+            if (selectedRecord == null) {
+                System.out.println("No record selected.");
+                return;
+            }
+            int recordId = selectedRecord.getId();
+    
+            // Create a new HealthRecord object with the updated data
+            HealthRecord updatedRecord = new HealthRecord(recordId, updatedWeight, updatedTemperature, updatedBloodPressure, updatedNote, selectedRecord.getDate(), selectedRecord.getUserId());
+    
+            // Update the record in the database
+            healthRecordController.updateHealthRecord(updatedRecord);
+    
+            // Clear the fields after successfully updating the record
+            weightField.clear();
+            temperatureField.clear();
+            bloodPressureField.clear();
+            noteField.clear();
+    
+            // Switch to the home scene
+            showHomeScene();
+        } catch (NumberFormatException e) {
+            // Handle invalid input
+            System.out.println("Invalid weight or temperature input.");
+        }
+    }
+    
     
     
     
