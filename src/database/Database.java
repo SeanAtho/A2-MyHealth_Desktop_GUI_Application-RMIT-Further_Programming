@@ -14,10 +14,22 @@ import java.util.List;
 import model.HealthRecord;
 import model.User;
 
+/**
+ * This class manages the database operations of the application. 
+ * It is responsible for creating the database connection, creating tables, and executing CRUD operations.
+ */
 public class Database {
 
     private Connection connection;
 
+    /**
+     * The constructor for the Database class. It initializes the SQLite database connection 
+     * and creates the necessary tables if they do not already exist.
+     * 
+     * The database file is named 'myhealthtracker.db'.
+     *
+     * It handles any SQLException that might occur during this process by printing the stack trace.
+     */
     public Database() {
         try {
             // Connect to the SQLite database
@@ -31,6 +43,10 @@ public class Database {
         }
     }
 
+    /**
+     * Creates the user and health_records tables in the database if they do not already exist.
+     * @throws SQLException if an SQL error occurs
+     */
     private void createTablesIfNotExist() throws SQLException {
         String createUserTable = "CREATE TABLE IF NOT EXISTS users (" +
                 "id INTEGER PRIMARY KEY," +
@@ -56,10 +72,19 @@ public class Database {
         }
     }
 
+    /**
+     * Returns the database connection.
+     * @return the database connection
+     */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Inserts the specified user into the users table.
+     * @param user the user to add
+     * @throws SQLException if an SQL error occurs
+     */
     public void addUser(User user) throws SQLException {
         String sql = "INSERT INTO users (firstName, lastName, username, password) VALUES (?, ?, ?, ?)";
 
@@ -72,7 +97,12 @@ public class Database {
         }
     }
 
-
+    /**
+     * Returns the user with the specified ID from the users table.
+     * @param id the ID of the user to retrieve
+     * @return the user with the specified ID, or null if no such user exists
+     * @throws SQLException if an SQL error occurs
+     */
     public User getUser(int id) throws SQLException {
         String sql = "SELECT * FROM users WHERE id = ?";
 
@@ -90,6 +120,11 @@ public class Database {
         }
     }
 
+    /**
+     * Updates the specified user in the users table.
+     * @param user the user to update
+     * @throws SQLException if an SQL error occurs
+     */
     public void updateUser(User user) throws SQLException {
         String sql = "UPDATE users SET firstName = ?, lastName = ?, username = ?, password = ? WHERE id = ?";
 
@@ -103,6 +138,11 @@ public class Database {
         }
     }
 
+    /**
+     * Deletes the user with the specified ID from the users table.
+     * @param id the ID of the user to delete
+     * @throws SQLException if an SQL error occurs
+     */
     public void deleteUser(int id) throws SQLException {
         String sql = "DELETE FROM users WHERE id = ?";
 
@@ -112,7 +152,11 @@ public class Database {
         }
     }
 
-
+    /**
+     * Inserts the specified health record into the health_records table.
+     * @param record the health record to add
+     * @throws SQLException if an SQL error occurs
+     */
     public void addHealthRecord(HealthRecord record) throws SQLException {
         String sql = "INSERT INTO health_records(user_id, weight, temperature, bloodPressure, note, date) VALUES(?, ?, ?, ?, ?, ?)";
     
@@ -127,7 +171,12 @@ public class Database {
         }
     }
     
-    
+    /**
+     * Returns the health record with the specified ID from the health_records table.
+     * @param id the ID of the health record to retrieve
+     * @return the health record with the specified ID, or null if no such record exists
+     * @throws SQLException if an SQL error occurs
+     */
     public HealthRecord getHealthRecord(int id) throws SQLException {
         String sql = "SELECT * FROM health_records WHERE id = ?";
     
@@ -137,7 +186,7 @@ public class Database {
     
             if (rs.next()) {
                 return new HealthRecord(
-                    rs.getInt("id"),  // Add this line if you have an 'id' field in your HealthRecord class
+                    rs.getInt("id"),
                     rs.getFloat("weight"),
                     rs.getFloat("temperature"),
                     rs.getString("blood_pressure"),  // Note: 'bloodPressure' -> 'blood_pressure'
@@ -151,6 +200,11 @@ public class Database {
         return null;  // Return null if no health record found for the given id
     }
     
+    /**
+     * Updates the specified health record in the health_records table.
+     * @param record the health record to update
+     * @throws SQLException if an SQL error occurs
+     */
     public void updateHealthRecord(HealthRecord record) throws SQLException {
         String sql = "UPDATE health_records SET weight = ?, temperature = ?, bloodPressure = ?, note = ?, date = ?, user_id = ? WHERE id = ?";
 
@@ -161,11 +215,16 @@ public class Database {
             pstmt.setString(4, record.getNote());
             pstmt.setDate(5, Date.valueOf(record.getDate()));
             pstmt.setInt(6, record.getUserId());
-            pstmt.setInt(7, record.getId());  // Assume you have getId() in your HealthRecord class
+            pstmt.setInt(7, record.getId());
             pstmt.executeUpdate();
         }
     }
     
+    /**
+     * Deletes the health record with the specified ID from the health_records table.
+     * @param id the ID of the health record to delete
+     * @throws SQLException if an SQL error occurs
+     */
     public void deleteHealthRecord(int id) throws SQLException {
         String sql = "DELETE FROM health_records WHERE id = ?";
 
@@ -175,6 +234,12 @@ public class Database {
         }
     }
     
+    /**
+     * Retrieves all health records for a given user from the health_records table.
+     * @param userId the ID of the user whose health records to retrieve
+     * @return a list of health records for the specified user
+     * @throws SQLException if an SQL error occurs
+     */
     public List<HealthRecord> getAllHealthRecords(int userId) throws SQLException {
         List<HealthRecord> records = new ArrayList<>();
         String sql = "SELECT * FROM health_records WHERE user_id = ?";
@@ -205,7 +270,11 @@ public class Database {
         return records;
     }
     
-    
+    /**
+     * Retrieves all users from the users table.
+     * @return a list of all users
+     * @throws SQLException if an SQL error occurs
+     */
     public List<User> getAllUsers() throws SQLException {
         String sql = "SELECT * FROM users";
         List<User> users = new ArrayList<>();

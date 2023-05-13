@@ -7,13 +7,14 @@ import java.util.List;
  * A class representing a user's profile, which contains personal information and health records.
  */
 public class UserProfile {
-    private String personalInfo;
-    private List<HealthRecord> healthRecords;
+    private String personalInfo; // The user's personal information.
+    private List<HealthRecord> healthRecords; // The health records associated with the user.
 
     /**
-     * Constructs a UserProfile object with the given personal information and an empty list of health records.
+     * Creates a UserProfile instance with the provided personal information.
+     * Initializes an empty list of HealthRecord instances.
      *
-     * @param personalInfo the personal information to set for the user
+     * @param personalInfo the user's personal information.
      */
     public UserProfile(String personalInfo) {
         this.personalInfo = personalInfo;
@@ -21,36 +22,36 @@ public class UserProfile {
     }
 
     /**
-     * Sets the personal information for the user.
+     * Sets the user's personal information.
      *
-     * @param personalInfo the personal information to set
+     * @param personalInfo the new personal information for the user.
      */
     public void setPersonalInfo(String personalInfo) {
         this.personalInfo = personalInfo;
     }
 
     /**
-     * Adds a health record to the user's profile.
+     * Adds a new HealthRecord to the user's profile.
      *
-     * @param record the health record to add
+     * @param record the HealthRecord instance to add.
      */
     public void addHealthRecord(HealthRecord record) {
         healthRecords.add(record);
     }
 
     /**
-     * Deletes a health record from the user's profile.
+     * Removes a specified HealthRecord from the user's profile.
      *
-     * @param record the health record to delete
+     * @param record the HealthRecord instance to remove.
      */
     public void deleteHealthRecord(HealthRecord record) {
         healthRecords.remove(record);
     }
 
     /**
-     * Returns a list of all the health records in the user's profile.
+     * Returns a list of all the user's HealthRecords.
      *
-     * @return the list of health records
+     * @return the list of HealthRecord instances.
      */
     public List<HealthRecord> getHealthRecords() {
         return healthRecords;
@@ -58,9 +59,9 @@ public class UserProfile {
 
 
     /**
-     * Returns the personal information of the user.
+     * Returns the user's personal information.
      *
-     * @return the personal information
+     * @return the personal information of the user.
      */
     public String getPersonalInfo() {
         return personalInfo;

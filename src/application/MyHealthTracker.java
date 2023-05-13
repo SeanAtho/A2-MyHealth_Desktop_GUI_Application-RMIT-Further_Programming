@@ -8,35 +8,51 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * The main class for the MyHealthTracker application.
+ * This class represents the main application for the MyHealthTracker.
+ * It initializes and sets up the necessary controllers, database and view for the application.
  */
 public class MyHealthTracker extends Application {
     
-    // Attributes
-    private UserController userController;              // Controller for user-related actions
-    private HealthRecordController healthRecordController;  // Controller for health record-related actions
-    private Database database;                          // Database for storing user and health record information
+    // The controller that handles user-related tasks and interactions
+    private UserController userController; 
+    
+    // The controller that handles health record-related tasks and interactions
+    private HealthRecordController healthRecordController;
+
+    // The database object that handles data persistence for the application
+    private Database database;                          
     
     /**
-     * The entry point for the application. Starts the JavaFX GUI.
+     * This method is the entry point of the JavaFX application.
+     * It sets up the necessary controllers, database, and view, and starts the application GUI.
+     *
+     * @param primaryStage the main window for the application
      */
     @Override
     public void start(Stage primaryStage) {
-        // Initialize the controllers, the database, and the view
+        // Initialize the database object
         database = new Database();
+
+        // Initialize the health record controller, providing it with the database object for data persistence
         healthRecordController = new HealthRecordController(database);
+
+        // Initialize the user controller, providing it with the database object and the health record controller
         userController = new UserController(database, healthRecordController);
+
+        // Initialize the view for the application, providing it with the primary stage and controllers
         MyHealthTrackerView view = new MyHealthTrackerView(primaryStage, userController, healthRecordController);
 
-        // Show the login scene
+        // Display the login scene as the first scene
         view.showLoginScene();
     }
     
     /**
-     * The main method for the application.
+     * The main method for the application, which launches the JavaFX application.
+     *
      * @param args command line arguments
      */
     public static void main(String[] args) {
+        // Start the JavaFX application
         launch(args);
     }
 }
