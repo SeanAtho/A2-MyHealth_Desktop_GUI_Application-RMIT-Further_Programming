@@ -627,6 +627,13 @@ public class MyHealthTrackerView {
             
             LocalDate date = LocalDate.now(); // or get this from an input field if you have one
             int userId = currentUser.getId(); // or however you're keeping track of the current user
+
+            // Limit the note field to 50 words
+            int noteWordCount = note.split("\\s+").length;
+            if (noteWordCount > 50) {
+                showErrorAlert("Note should be within 50 words.");
+                return;
+            }
     
             // Create a new HealthRecord object
             HealthRecord newRecord = new HealthRecord(0, weight, temperature, bloodPressure, note, date, userId);
