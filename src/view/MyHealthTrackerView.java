@@ -594,18 +594,24 @@ public class MyHealthTrackerView {
 
 
     /**
-     * This method handles saving a health record. It retrieves the data from the input fields, including
-     * weight, temperature, blood pressure, and a note. If the weight and temperature fields are empty, they
-     * default to 0. It then creates a new HealthRecord object with the retrieved data and the current date 
-     * and user ID. The new record is then added to the database. Upon successful completion, the input 
-     * fields are cleared, and the home scene is displayed. If an SQL exception occurs when accessing the 
-     * database, or a NumberFormatException occurs when converting the strings to floats, the exceptions 
-     * are caught and printed to the console.
+     * Handles the event of saving a health record. This method retrieves input from the weight, temperature,
+     * blood pressure, and note fields. If any of these fields are empty, they default to 0 for weight and temperature,
+     * and empty string for blood pressure and note. If all the fields are empty, an error alert is shown
+     * and the function returns without saving the record. 
+     *
+     * The note field is limited to 50 words; if more words are entered, an error alert is shown and the function
+     * returns without saving the record.
+     *
+     * On successful retrieval and validation of input, a new HealthRecord object is created with the current 
+     * date and user ID, along with the retrieved input. This record is then added to the database.
      * 
-     * @post The new health record is added to the database, the input fields are cleared, and the home 
-     *       scene is displayed.
-     * @throws SQLException if an error occurs when adding the new record to the database.
-     * @throws NumberFormatException if the weight or temperature fields contain non-numeric values.
+     * After successful addition of the record to the database, all input fields are cleared and the home scene is displayed.
+     * 
+     * If an SQLException occurs while adding the record to the database, or a NumberFormatException occurs while
+     * converting weight or temperature input to float, the exception is caught and printed to the console.
+     * 
+     * @throws SQLException If there is an error while adding the record to the database.
+     * @throws NumberFormatException If the weight or temperature input cannot be converted to float.
      */
     private void handleSaveRecord() {
         try {
