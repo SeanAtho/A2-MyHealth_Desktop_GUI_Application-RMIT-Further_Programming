@@ -40,7 +40,7 @@ public class User {
      *
      * @return the id of the user.
      */
-    public int getId() { // changed return type from String to int
+    public int getId() {
         return id;
     }
 
@@ -49,7 +49,7 @@ public class User {
      *
      * @param id the new id.
      */
-    public void setId(int id) { // changed parameter type from String to int
+    public void setId(int id) {
         this.id = id;
     }
 

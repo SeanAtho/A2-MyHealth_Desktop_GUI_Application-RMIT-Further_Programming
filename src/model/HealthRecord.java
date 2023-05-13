@@ -130,7 +130,7 @@ public class HealthRecord {
      * Gets the user ID associated with this health record.
      * @return The user ID as an int.  // Updated comment to reflect change to int
      */
-    public int getUserId() {  // Changed return type from String to int
+    public int getUserId() {
         return userId;
     }
 
@@ -138,7 +138,7 @@ public class HealthRecord {
      * Sets the user ID associated with this health record.
      * @param userId The user ID as an int. 
      */
-    public void setUserId(int userId) {  // Added setter method for userId
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

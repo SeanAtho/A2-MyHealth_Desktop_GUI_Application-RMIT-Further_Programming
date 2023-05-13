@@ -186,7 +186,7 @@ public class Database {
     
             if (rs.next()) {
                 return new HealthRecord(
-                    rs.getInt("id"),  // Add this line if you have an 'id' field in your HealthRecord class
+                    rs.getInt("id"),
                     rs.getFloat("weight"),
                     rs.getFloat("temperature"),
                     rs.getString("blood_pressure"),  // Note: 'bloodPressure' -> 'blood_pressure'
@@ -215,7 +215,7 @@ public class Database {
             pstmt.setString(4, record.getNote());
             pstmt.setDate(5, Date.valueOf(record.getDate()));
             pstmt.setInt(6, record.getUserId());
-            pstmt.setInt(7, record.getId());  // Assume you have getId() in your HealthRecord class
+            pstmt.setInt(7, record.getId());
             pstmt.executeUpdate();
         }
     }

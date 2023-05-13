@@ -28,27 +28,107 @@ import java.util.List;
 public class MyHealthTrackerView {
 
     // Class member variables
+
+    /**
+    * The primary stage for this view.
+    */
     private Stage primaryStage;
+
+    /**
+    * The user controller for handling user-related actions.
+    */
     private UserController userController;
+
+    /**
+    * The health record controller for handling health record-related actions.
+    */
     private HealthRecordController healthRecordController;
+
+    /**
+    * The currently logged-in user.
+    */
     private User currentUser;
+
+    /**
+    * The scene for user login.
+    */
     private Scene loginScene;
+
+    /**
+    * The scene for the home page.
+    */
     private Scene homeScene;
+
+    /**
+    * Database instance for performing CRUD operations.
+    */
     private Database database;
    
     // Additional scenes and UI components for profile, records, and more
+
+    /**
+    * The scene for the user's profile.
+    */
     private Scene profileScene;
+
+    /**
+    * The scene that displays health records.
+    */
     private Scene recordsScene;
+
+    /**
+    * The scene for creating a new health record.
+    */
     private Scene createRecordScene;
+
+    /**
+    * The scene for editing an existing health record.
+    */
     private Scene editRecordScene;
+
+    /**
+    * A text field for entering weight information.
+    */
     private TextField weightField;
+
+    /**
+    * A text field for entering temperature information.
+    */
     private TextField temperatureField;
+
+    /**
+    * A text field for entering blood pressure information.
+    */
     private TextField bloodPressureField;
+
+    /**
+    * A text area for entering additional notes.
+    */
     private TextArea noteField;
+
+    /**
+    * A table for displaying health records.
+    */
     private TableView<HealthRecord> recordsTable;
+
+    /**
+    * A label that displays the full name of the current user.
+    */
     private Label fullNameLabel;
+
+    /**
+    * A text field for entering the first name of a new user.
+    */
     private TextField firstNameField;
+
+    /**
+    * A text field for entering the last name of a new user.
+    */
     private TextField lastNameField;
+
+    /**
+    * The scene for registering a new user.
+    */
     private Scene registerScene;
 
 
@@ -111,7 +191,7 @@ public class MyHealthTrackerView {
         grid.add(goToRegisterButton, 1, 2);
 
         // Set the GridPane as the root of the loginScene
-        loginScene = new Scene(grid, 300, 175); // Adjusted the height for fewer fields
+        loginScene = new Scene(grid, 300, 175); 
     }
 
     /**
@@ -547,12 +627,16 @@ public class MyHealthTrackerView {
      */
     private void handleRegister(String username, String password, String firstName, String lastName) {
         // Validate the input fields.
+        // If any of the fields is empty, show an error alert and return from the function.
         if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
             showErrorAlert("All fields must be filled out.");
             return;
         }
 
+        // Attempt to register the user using the provided information.
         User user = userController.register(username, password, firstName, lastName);
+        // If registration is successful, set the current user and show the home scene.
+        // Otherwise, show an error alert.
         if (user != null) {
             currentUser = user;
             showHomeScene();
@@ -585,7 +669,11 @@ public class MyHealthTrackerView {
             // Otherwise, update the currentUser's first name and last name, save the changes, and show the home scene
             currentUser.setFirstName(newFirstName);
             currentUser.setLastName(newLastName);
+
+            // Save the changes using the userController
             userController.updateUser(currentUser);
+
+            // After successful update, switch to the home scene
             showHomeScene();
         }
     }
@@ -616,8 +704,8 @@ public class MyHealthTrackerView {
      * converting weight or temperature input to float, the exception is caught and printed to the console.
      * 
      * @throws SQLException If there is an error while adding the record to the database.
-     * @throws NumberFormatException If the weight or temperature input cannot be converted to float.
-     */
+     * @throws NumberFormatException If the weight or temperature input cannot be converted to float. This can occur if a non-numeric character is entered.
+    */
     private void handleSaveRecord() {
         try {
             // Get data from input fields
@@ -632,7 +720,7 @@ public class MyHealthTrackerView {
                 return;
             }
             
-            // Convert the strings to floats
+            // Convert the strings to floats. A NumberFormatException can occur here if non-numeric characters are entered.
             float weight = weightText.isEmpty() ? 0 : Float.parseFloat(weightText);
             float temperature = temperatureText.isEmpty() ? 0 : Float.parseFloat(temperatureText);
             
@@ -664,7 +752,7 @@ public class MyHealthTrackerView {
             // Handle any errors that might occur when trying to access the database
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            // Handle any errors that might occur when converting the strings to floats
+            // Handle any errors that might occur when converting the strings to floats. This can occur if non-numeric characters are entered.
             e.printStackTrace();
         }
     }
@@ -672,13 +760,14 @@ public class MyHealthTrackerView {
     
     /**
      * This method handles saving changes made to an existing health record. It retrieves the updated data 
-     * from the input fields, including weight, temperature, blood pressure, and a note. It then retrieves 
-     * the currently selected health record's ID. If no record is selected, a message is printed to the 
-     * console and the method returns. A new HealthRecord object is then created with the updated data, 
-     * maintaining the original record's date and user ID. The record is then updated in the database. Upon 
-     * successful completion, the input fields are cleared and the home scene is displayed. If a 
-     * NumberFormatException occurs when converting the weight or temperature fields to floats, the 
-     * exception is caught and a message is printed to the console.
+     * from the input fields, including weight, temperature, blood pressure, and a note. If all fields are empty,
+     * an error alert is shown and the method returns without saving the changes. In case of an empty field,
+     * the previous value is retained. It then retrieves the currently selected health record's ID. If no 
+     * record is selected, a message is printed to the console and the method returns. A new HealthRecord 
+     * object is then created with the updated data, maintaining the original record's date and user ID. The 
+     * record is then updated in the database. Upon successful completion, the input fields are cleared and the 
+     * home scene is displayed. If a NumberFormatException occurs when converting the weight or temperature 
+     * fields to floats, the exception is caught and a message is printed to the console.
      * 
      * @post The selected health record in the database is updated with the new data, the input fields are 
      *       cleared, and the home scene is displayed.
@@ -739,10 +828,13 @@ public class MyHealthTrackerView {
      * Handles the Edit Record button click event, showing the Edit Record scene.
      */
     private void handleEditRecord() {
+        // Get the currently selected health record
         HealthRecord selectedRecord = recordsTable.getSelectionModel().getSelectedItem();
         if (selectedRecord != null) {
+            // Show the Edit Record scene with the details of the selected record
             showEditRecordScene(selectedRecord);
         } else {
+            // If no record is selected, show an error alert
             showErrorAlert("Please select a record to edit.");
         }
     }
@@ -751,11 +843,18 @@ public class MyHealthTrackerView {
      * Handles the Delete Record button click event, deleting the selected record.
      */
     private void handleDeleteRecord() {
+        // Get the currently selected health record
         HealthRecord selectedRecord = recordsTable.getSelectionModel().getSelectedItem();
+
+        // If a record is selected
         if (selectedRecord != null) {
+            // Delete the selected record using the healthRecordController
             healthRecordController.deleteHealthRecord(selectedRecord);
+
+            // Update the record table to reflect the deletion
             updateRecordTable();
         } else {
+            // If no record is selected, show an error alert
             showErrorAlert("Please select a record to delete.");
         }
     }
@@ -765,19 +864,31 @@ public class MyHealthTrackerView {
      * Handles exporting the health records of the current user to a text file.
      */
     private void handleExportRecords() {
+        // Create a new FileChooser
         FileChooser fileChooser = new FileChooser();
+
+        // Set the title of the FileChooser dialog window
         fileChooser.setTitle("Export Records");
+
+        // Add an extension filter for .txt files to the FileChooser
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+
+        // Show the save dialog and get the file the user chose
         File file = fileChooser.showSaveDialog(primaryStage);
-    
+        
+        // If a file was chosen
         if (file != null) {
             try {
+                // Create a FileWriter for the chosen file
                 FileWriter writer = new FileWriter(file);
+                // Get all health records for the current user and write them to the file
                 for (HealthRecord record : healthRecordController.getHealthRecordsForUser(currentUser)) {
                     writer.write(record.toString() + System.lineSeparator());
                 }
+                // Close the FileWriter
                 writer.close();
             } catch (IOException e) {
+                // If an IOException occurs, show an error alert with the exception message
                 showErrorAlert("Failed to export records: " + e.getMessage());
             }
         }
