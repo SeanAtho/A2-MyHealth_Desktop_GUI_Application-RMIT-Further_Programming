@@ -614,28 +614,26 @@ public class MyHealthTrackerView {
             String temperatureText = temperatureField.getText();
             String bloodPressure = bloodPressureField.getText();
             String note = noteField.getText();
-        
+            
+            // Check if all fields are empty
+            if (weightText.isEmpty() && temperatureText.isEmpty() && bloodPressure.isEmpty() && note.isEmpty()) {
+                showErrorAlert("At least one field should be filled.");
+                return;
+            }
+            
             // Convert the strings to floats
             float weight = weightText.isEmpty() ? 0 : Float.parseFloat(weightText);
             float temperature = temperatureText.isEmpty() ? 0 : Float.parseFloat(temperatureText);
             
             LocalDate date = LocalDate.now(); // or get this from an input field if you have one
             int userId = currentUser.getId(); // or however you're keeping track of the current user
-
-            // Limit the note field to 50 words
-            int noteWordCount = note.split("\\s+").length;
-            if (noteWordCount > 50) {
-                showErrorAlert("Note should be within 50 words.");
-                return;
-            }
-
     
             // Create a new HealthRecord object
             HealthRecord newRecord = new HealthRecord(0, weight, temperature, bloodPressure, note, date, userId);
     
             // Use the Database class to add the new record to the database
             database.addHealthRecord(newRecord);
-
+    
             // Clear the fields after successfully saving the record
             weightField.clear();
             temperatureField.clear();
@@ -652,6 +650,7 @@ public class MyHealthTrackerView {
             e.printStackTrace();
         }
     }
+    
     
     /**
      * This method handles saving changes made to an existing health record. It retrieves the updated data 
