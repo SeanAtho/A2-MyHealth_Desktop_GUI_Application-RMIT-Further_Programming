@@ -440,18 +440,23 @@ public class MyHealthTrackerView {
      *               in the 'editRecordScene'.
      */
     private void showEditRecordScene(HealthRecord record) {
+        // Reinitialize the editRecordScene with the updated fields
+        initEditRecordScene();
+    
         // Populate the weight field with the record's weight
         weightField.setText(String.valueOf(record.getWeight()));
         // Populate the temperature field with the record's temperature
         temperatureField.setText(String.valueOf(record.getTemperature()));
         // Populate the blood pressure field with the record's blood pressure
-        bloodPressureField.setText(String.valueOf(record.getBloodPressure()));
+        bloodPressureField.setText(record.getBloodPressure());
         // Populate the note field with the record's note
         noteField.setText(record.getNote());
-
+    
         // Set the scene of the primary stage to the 'editRecordScene'
         primaryStage.setScene(editRecordScene);
     }
+    
+    
 
 
     /**
