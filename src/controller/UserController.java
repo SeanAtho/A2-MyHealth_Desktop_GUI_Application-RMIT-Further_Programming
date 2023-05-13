@@ -217,8 +217,12 @@ public class UserController {
 
     /**
      * Logs out the currently logged-in user.
+     *
+     * This method is responsible for handling user logout. It sets the current user 
+     * to null, indicating that there is no user currently logged in.
      */
     public void logout() {
-      
+        // Set the current user to null, indicating no user is currently logged in
+        this.currentUser = null;
     }
 }
