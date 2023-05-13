@@ -592,21 +592,6 @@ public class MyHealthTrackerView {
         showCreateRecordScene();
     }
 
-    /**
-     * Counts the number of words in a string.
-     *
-     * @param text The string to count words in.
-     * @return The number of words in the string.
-     */
-    private int countWords(String text) {
-        if (text == null || text.isEmpty()) {
-            return 0;
-        }
-
-        String[] words = text.split("\\s+");
-        return words.length;
-    }
-
 
     /**
      * This method handles saving a health record. It retrieves the data from the input fields, including
