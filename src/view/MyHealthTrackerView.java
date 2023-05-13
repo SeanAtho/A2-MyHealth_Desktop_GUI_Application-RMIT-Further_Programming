@@ -534,27 +534,24 @@ public class MyHealthTrackerView {
     
 
     /**
-     * This method is responsible for handling user registration. It attempts to register a new user
-     * with the provided username, password, and names by delegating to the userController.
-     * If the registration is successful, the currentUser is set as the newly registered user, 
-     * and the home scene is shown on the stage.
-     * If the registration is not successful, an error alert dialog is shown with a message indicating 
-     * the registration failure.
-     *
-     * @param username The username provided by the user in the registration form.
-     * @param password The password provided by the user in the registration form.
-     * @param firstName The first name provided by the user in the registration form.
-     * @param lastName The last name provided by the user in the registration form.
+     * Handles user registration with the provided information.
+     * @param username The username entered by the user.
+     * @param password The password entered by the user.
+     * @param firstName The first name entered by the user.
+     * @param lastName The last name entered by the user.
      */
     private void handleRegister(String username, String password, String firstName, String lastName) {
-        // Attempt to register a new user with the provided details
+        // Validate the input fields.
+        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
+            showErrorAlert("All fields must be filled out.");
+            return;
+        }
+
         User user = userController.register(username, password, firstName, lastName);
         if (user != null) {
-            // If registration is successful, set the currentUser as the newly registered user and show the home scene
             currentUser = user;
             showHomeScene();
         } else {
-            // If registration is not successful, show an error alert dialog indicating the registration failure
             showErrorAlert("Registration failed. Please try again.");
         }
     }
@@ -596,6 +593,22 @@ public class MyHealthTrackerView {
     }
 
     /**
+     * Counts the number of words in a string.
+     *
+     * @param text The string to count words in.
+     * @return The number of words in the string.
+     */
+    private int countWords(String text) {
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+
+        String[] words = text.split("\\s+");
+        return words.length;
+    }
+
+
+    /**
      * This method handles saving a health record. It retrieves the data from the input fields, including
      * weight, temperature, blood pressure, and a note. If the weight and temperature fields are empty, they
      * default to 0. It then creates a new HealthRecord object with the retrieved data and the current date 
@@ -623,6 +636,14 @@ public class MyHealthTrackerView {
             
             LocalDate date = LocalDate.now(); // or get this from an input field if you have one
             int userId = currentUser.getId(); // or however you're keeping track of the current user
+
+            // Limit the note field to 50 words
+            int noteWordCount = note.split("\\s+").length;
+            if (noteWordCount > 50) {
+                showErrorAlert("Note should be within 50 words.");
+                return;
+            }
+
     
             // Create a new HealthRecord object
             HealthRecord newRecord = new HealthRecord(0, weight, temperature, bloodPressure, note, date, userId);
