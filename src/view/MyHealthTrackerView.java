@@ -687,8 +687,8 @@ public class MyHealthTrackerView {
     private void handleSaveEditedRecord() {
         try {
             // Get the updated data from the fields
-            float updatedWeight = Float.parseFloat(weightField.getText());
-            float updatedTemperature = Float.parseFloat(temperatureField.getText());
+            String weightText = weightField.getText();
+            String temperatureText = temperatureField.getText();
             String updatedBloodPressure = bloodPressureField.getText();
             String updatedNote = noteField.getText();
     
@@ -698,10 +698,22 @@ public class MyHealthTrackerView {
                 System.out.println("No record selected.");
                 return;
             }
-            int recordId = selectedRecord.getId();
+            
+            // Check if all fields are empty
+            if (weightText.isEmpty() && temperatureText.isEmpty() && updatedBloodPressure.isEmpty() && updatedNote.isEmpty()) {
+                showErrorAlert("At least one field should be filled.");
+                return;
+            }
+    
+            // Convert the strings to floats, if empty, use the old value
+            float updatedWeight = weightText.isEmpty() ? selectedRecord.getWeight() : Float.parseFloat(weightText);
+            float updatedTemperature = temperatureText.isEmpty() ? selectedRecord.getTemperature() : Float.parseFloat(temperatureText);
+            // If blood pressure or note is empty, use the old value
+            updatedBloodPressure = updatedBloodPressure.isEmpty() ? selectedRecord.getBloodPressure() : updatedBloodPressure;
+            updatedNote = updatedNote.isEmpty() ? selectedRecord.getNote() : updatedNote;
     
             // Create a new HealthRecord object with the updated data
-            HealthRecord updatedRecord = new HealthRecord(recordId, updatedWeight, updatedTemperature, updatedBloodPressure, updatedNote, selectedRecord.getDate(), selectedRecord.getUserId());
+            HealthRecord updatedRecord = new HealthRecord(selectedRecord.getId(), updatedWeight, updatedTemperature, updatedBloodPressure, updatedNote, selectedRecord.getDate(), selectedRecord.getUserId());
     
             // Update the record in the database
             healthRecordController.updateHealthRecord(updatedRecord);
@@ -716,9 +728,10 @@ public class MyHealthTrackerView {
             showHomeScene();
         } catch (NumberFormatException e) {
             // Handle invalid input
-            System.out.println("Invalid weight or temperature input.");
+            showErrorAlert("Invalid weight or temperature input.");
         }
     }
+    
     
     
 
