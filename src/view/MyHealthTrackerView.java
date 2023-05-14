@@ -386,7 +386,7 @@ public class MyHealthTrackerView {
         grid.add(backButton, 1, 4);
 
         // Set the GridPane as the root of the createRecordScene and set its size
-        createRecordScene = new Scene(grid, 400, 300);
+        createRecordScene = new Scene(grid, 600, 400);
     }
 
     /**
@@ -417,7 +417,7 @@ public class MyHealthTrackerView {
         grid.add(backButton, 1, 4);
 
         // Set the GridPane as the root of the editRecordScene and set its size
-        editRecordScene = new Scene(grid, 400, 300);
+        editRecordScene = new Scene(grid, 600, 400);
     }
 
 
