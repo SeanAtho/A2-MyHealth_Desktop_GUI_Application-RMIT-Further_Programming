@@ -204,22 +204,31 @@ public class MyHealthTrackerView {
     private void initRegisterScene() {
         // Create the UI elements for the register scene
         VBox registerForm = new VBox(10); // Vertical box with 10 pixels spacing between nodes
+        registerForm.setPadding(new Insets(15, 12, 15, 12)); // Add padding to the VBox
+    
         TextField usernameField = new TextField(); // Text field for entering username
         PasswordField passwordField = new PasswordField(); // Password field for entering password
         TextField firstNameField = new TextField(); // Text field for entering first name
         TextField lastNameField = new TextField(); // Text field for entering last name
+    
         Button registerButton = new Button("Register"); // Button to submit the registration form
+        registerButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand
+    
         Button backButton = new Button("Back to Login"); // Button to go back to the login scene
-
+        backButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to expand
+    
+        HBox buttonBox = new HBox(10); // Horizontal box with 10 pixels spacing between nodes
+        buttonBox.getChildren().addAll(registerButton, backButton); // Add the buttons to the HBox
+    
         // Add the UI elements to the VBox
         registerForm.getChildren().addAll(
             new Label("Username:"), usernameField,
             new Label("Password:"), passwordField,
             new Label("First Name:"), firstNameField,
             new Label("Last Name:"), lastNameField,
-            registerButton, backButton
+            buttonBox // Add the HBox containing the buttons
         );
-
+    
         // Set the event handlers for the buttons
         // The registerButton's handler calls the handleRegister method with the text from each input field
         // The backButton's handler changes the scene back to the login scene
@@ -230,11 +239,13 @@ public class MyHealthTrackerView {
             lastNameField.getText()
         ));
         backButton.setOnAction(e -> primaryStage.setScene(loginScene));
-
+    
         // Create the scene with the VBox as the root node and add it to the primary stage
-        // The scene has a width of 300 pixels and a height of 275 pixels
+        // The scene has a width of 600 pixels and a height of 400 pixels
         registerScene = new Scene(registerForm, 600, 400);
     }
+    
+    
 
 
     /**
