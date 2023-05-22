@@ -6,6 +6,7 @@ import controller.HealthRecordController;
 import model.User;
 import model.HealthRecord;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -375,17 +376,8 @@ public class MyHealthTrackerView {
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> showRecordsScene());
 
-        // Create and configure the GridPane layout
-        GridPane grid = new GridPane();
-        // Add the labels and input fields to the grid
-        grid.add(new Label("Weight (kg):"), 0, 0);
-        grid.add(weightField, 1, 0);
-        grid.add(new Label("Temperature (Celcius):"), 0, 1);
-        grid.add(temperatureField, 1, 1);
-        grid.add(new Label("Blood Pressure (Low/High):"), 0, 2);
-        grid.add(bloodPressureField, 1, 2);
-        grid.add(new Label("Note (Max 50 Words):"), 0, 3);
-        grid.add(noteField, 1, 3);
+        // Create and configure the GridPane layout using the helper method createRecordGridPane()
+        GridPane grid = createRecordGridPane();
         // Add the buttons to the grid
         grid.add(saveButton, 0, 4);
         grid.add(backButton, 1, 4);
@@ -443,6 +435,11 @@ public class MyHealthTrackerView {
         grid.setHgap(10);
         grid.setVgap(10);
 
+        // Set the minimum width of the first column to fit the longest label
+        grid.getColumnConstraints().add(new ColumnConstraints(200));
+        // Set padding around the content of GridPane
+        grid.setPadding(new Insets(10, 10, 10, 10));  // Adjust these values as needed
+    
         // Add labels and corresponding text fields for weight, temperature, blood pressure, and note to the GridPane
         grid.add(new Label("Weight (kg):"), 0, 0);
         grid.add(weightField, 1, 0);
@@ -452,10 +449,11 @@ public class MyHealthTrackerView {
         grid.add(bloodPressureField, 1, 2);
         grid.add(new Label("Note (Max 50 Words):"), 0, 3);
         grid.add(noteField, 1, 3);
-
+    
         // Return the constructed GridPane
         return grid;
     }
+    
 
 
     /**
