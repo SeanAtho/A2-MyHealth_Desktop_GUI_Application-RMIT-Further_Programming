@@ -63,7 +63,9 @@ public class MyHealthTrackerView {
     * Database instance for performing CRUD operations.
     */
     private Database database;
-   
+
+    
+    
     // Additional scenes and UI components for profile, records, and more
 
     /**
@@ -191,7 +193,7 @@ public class MyHealthTrackerView {
         grid.add(goToRegisterButton, 1, 2);
 
         // Set the GridPane as the root of the loginScene
-        loginScene = new Scene(grid, 300, 175); 
+        loginScene = new Scene(grid, 600, 400); 
     }
 
     /**
@@ -230,7 +232,7 @@ public class MyHealthTrackerView {
 
         // Create the scene with the VBox as the root node and add it to the primary stage
         // The scene has a width of 300 pixels and a height of 275 pixels
-        registerScene = new Scene(registerForm, 300, 275);
+        registerScene = new Scene(registerForm, 600, 400);
     }
 
 
@@ -262,7 +264,7 @@ public class MyHealthTrackerView {
         vbox.getChildren().addAll(fullNameLabel, profileButton, recordsButton, exportButton, logoutButton);
 
         // Set the VBox as the root of the homeScene, and specify the scene's width and height
-        homeScene = new Scene(vbox, 300, 200);
+        homeScene = new Scene(vbox, 600, 400);
     }
 
     /**
@@ -296,7 +298,7 @@ public class MyHealthTrackerView {
     
         // Set the GridPane as the root of the profileScene
         // The scene has a width of 300 pixels and a height of 200 pixels
-        profileScene = new Scene(grid, 300, 200);
+        profileScene = new Scene(grid, 600, 400);
     }
     
 
@@ -307,6 +309,9 @@ public class MyHealthTrackerView {
     private void initRecordsScene() {
         // Create a TableView to display the health records
         recordsTable = new TableView<>();
+
+        // This line allows the TableView to adjust columns based on its size
+        recordsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     
         // Create columns for the TableView, setting the cell value factory for each column
         TableColumn<HealthRecord, Float> weightColumn = new TableColumn<>("Weight");
@@ -345,7 +350,7 @@ public class MyHealthTrackerView {
         vbox.getChildren().addAll(recordsTable, addButton, editButton, deleteButton, backButton);
     
         // Set the VBox as the root of the recordsScene
-        recordsScene = new Scene(vbox, 400, 300); // Set the size of the scene
+        recordsScene = new Scene(vbox, 600, 400); // Set the size of the scene
     }
     
 
@@ -373,13 +378,13 @@ public class MyHealthTrackerView {
         // Create and configure the GridPane layout
         GridPane grid = new GridPane();
         // Add the labels and input fields to the grid
-        grid.add(new Label("Weight:"), 0, 0);
+        grid.add(new Label("Weight (kg):"), 0, 0);
         grid.add(weightField, 1, 0);
-        grid.add(new Label("Temperature:"), 0, 1);
+        grid.add(new Label("Temperature (Celcius):"), 0, 1);
         grid.add(temperatureField, 1, 1);
-        grid.add(new Label("Blood Pressure:"), 0, 2);
+        grid.add(new Label("Blood Pressure (Low/High):"), 0, 2);
         grid.add(bloodPressureField, 1, 2);
-        grid.add(new Label("Note:"), 0, 3);
+        grid.add(new Label("Note (Max 50 Words):"), 0, 3);
         grid.add(noteField, 1, 3);
         // Add the buttons to the grid
         grid.add(saveButton, 0, 4);
@@ -439,13 +444,13 @@ public class MyHealthTrackerView {
         grid.setVgap(10);
 
         // Add labels and corresponding text fields for weight, temperature, blood pressure, and note to the GridPane
-        grid.add(new Label("Weight:"), 0, 0);
+        grid.add(new Label("Weight (kg):"), 0, 0);
         grid.add(weightField, 1, 0);
-        grid.add(new Label("Temperature:"), 0, 1);
+        grid.add(new Label("Temperature (Celcius):"), 0, 1);
         grid.add(temperatureField, 1, 1);
-        grid.add(new Label("Blood Pressure:"), 0, 2);
+        grid.add(new Label("Blood Pressure (Low/High):"), 0, 2);
         grid.add(bloodPressureField, 1, 2);
-        grid.add(new Label("Note:"), 0, 3);
+        grid.add(new Label("Note (Max 50 Words):"), 0, 3);
         grid.add(noteField, 1, 3);
 
         // Return the constructed GridPane
@@ -871,7 +876,7 @@ public class MyHealthTrackerView {
         fileChooser.setTitle("Export Records");
 
         // Add an extension filter for .txt files to the FileChooser
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
         // Show the save dialog and get the file the user chose
         File file = fileChooser.showSaveDialog(primaryStage);
