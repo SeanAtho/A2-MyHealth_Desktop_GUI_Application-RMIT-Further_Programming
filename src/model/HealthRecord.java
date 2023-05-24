@@ -142,7 +142,7 @@ public class HealthRecord {
         this.userId = userId;
     }
 
-     /**
+    /**
      * Gets the unique identifier of this health record.
      * @return The ID as an int.
      */
