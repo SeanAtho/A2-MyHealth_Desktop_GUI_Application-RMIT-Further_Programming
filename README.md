@@ -40,6 +40,7 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 Run the following command to execute the program:
     
     java -cp bin application.MyHealthTracker
+
 ## How to Perform JUnit Tests:
 ------------------------------
 All tests are located in the test directory. To run all tests, use the following command:
