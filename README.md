@@ -30,14 +30,15 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 --------------------------
 1. To get started, you need to extract the compressed file to a directory of your choice.
 2. To compile the program, open a command prompt and navigate to the root directory of the project. Then, run the following command:
-
-javac -d bin -cp .;lib/* ./src/*.java
+    
+    javac -d bin -cp .;lib/* ./src/*.java
 
 3. This will compile all the source files and create class files in the bin directory.
 
 ## How to Run MyHealthTracker:
 ------------------------------
 Run the following command to execute the program:
+    
     java -cp bin application.MyHealthTracker
 ## How to Perform JUnit Tests:
 ------------------------------
