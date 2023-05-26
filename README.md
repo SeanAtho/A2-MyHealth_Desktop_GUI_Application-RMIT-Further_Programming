@@ -1,8 +1,8 @@
 # MyHealth Application
 
-Name: Sean Atherton
-Student Number: s3893785
-Student Email: s3893785@student.rmit.edu.au
+- Name: Sean Atherton
+- Student Number: s3893785
+- Student Email: s3893785@student.rmit.edu.au
 
 ## JDK Version
 --------------
