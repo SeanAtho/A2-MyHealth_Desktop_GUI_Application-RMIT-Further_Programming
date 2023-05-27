@@ -34,23 +34,32 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
     cd C:\Users\yourusername\Desktop\MyHealth
 
 Remember to replace C:\Users\mrsti\Desktop\MyHealth with the actual path of your project folder.
-4. Now, you can compile all the Java files at once using the javac command. The -cp option is used to specify the classpath, and . means the current directory. src\*.java is a wildcard that matches all .java files in the 'src' directory.  External .jar files are located in the lib folder of your project. Here's how you can compile by entering the following into the command prompt. **Navigate to your project directory**
+4. Now, you can compile all the Java files at once using the javac command. The -cp option is used to specify the classpath, and . means the current directory. src\*.java is a wildcard that matches all .java files in the 'src' directory.  External .jar files are located in the lib folder of your project. Here's how you can compile by entering the following into the command prompt. *Navigate to your project directory
 
-5. 
+5. Generate the sources.txt file:
+
     dir /s /B src\*.java > sources.txt
-6. 
+
+6. Compile the Java files:
+
     javac -d bin -cp .;lib/* @sources.txt
 
-
-
-
-3. This will compile all the source files and create class files in the bin directory.
+7. This will compile all the source files and create class files in the bin directory.
 
 ## How to Run MyHealthTracker:
 ------------------------------
-Run the following command to execute the program:
-    
-    java -cp bin application.MyHealthTracker
+1. Navigate to your project directory:
+
+   cd C:\Users\yourusername\Desktop\MyHealth
+
+2. Set the PATH_TO_FX environment variable *The PATH_TO_FX environment variable should point to the lib directory of your installed JavaFX SDK. It is used to tell Java where to find the JavaFX modules required to run your application.:
+
+    set PATH_TO_FX="C:\Program Files\Eclipse Adoptium\javafx-sdk-11\lib"
+
+3. Run the JavaFX application:
+
+    java --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics,javafx.media,javafx.swing,javafx.web -Dprism.order=sw -cp bin;lib/* application.MyHealthTracker
+
 
 ## How to Perform JUnit Tests:
 ------------------------------
