@@ -33,12 +33,12 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 ## How to Compile Program:
 
 1. To get started, you need to extract the compressed file to a directory of your choice.
-2. To compile the program, open a command prompt and navigate to the programs directory. For example, if the project is on the Desktop you would type:
+2. To compile the program, open a command prompt and navigate to the programs directory. For example, if the program is on the Desktop you would type:
 
     cd C:\Users\yourusername\Desktop\MyHealth
 
-    Remember to replace C:\Users\mrsti\Desktop\MyHealth with the actual path of your project folder.
-4. Now, you can compile all the Java files at once using the javac command. The -cp option is used to specify the classpath, and . means the current directory. src\*.java is a wildcard that matches all .java files in the 'src' directory.External .jar files are located in the lib folder of your project. Here's how you can compile by entering the following into the command prompt. *Navigate to your project directory
+    Remember to replace C:\Users\mrsti\Desktop\MyHealth with the actual path of your program folder.
+4. Now, you can compile all the Java files at once using the javac command. The -cp option is used to specify the classpath, and . means the current directory. src\*.java is a wildcard that matches all .java files in the 'src' directory.External .jar files are located in the lib folder of the program. Here's how you can compile by entering the following into the command prompt. *Navigate to your project directory
 
 5. Generate the sources.txt file:
 
@@ -53,25 +53,26 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 ------------------------------
 ## How to Run MyHealthTracker:
 
-1. Navigate to your project directory:
+1. Navigate to your program directory:
 
    cd C:\Users\yourusername\Desktop\MyHealth
 
-2. Set the PATH_TO_FX environment variable *The PATH_TO_FX environment variable should point to the lib directory of your installed JavaFX SDK. It is used to tell Java where to find the JavaFX modules required to run your application.:
+2. Set the PATH_TO_FX environment variable *The PATH_TO_FX environment variable should point to the lib directory of your installed JavaFX SDK. It is used to tell Java where to find the JavaFX modules required to run the program.:
 
     set PATH_TO_FX="C:\Program Files\Eclipse Adoptium\javafx-sdk-11\lib"
 
-3. Run the JavaFX application:
+3. Run the MyHealth application:
 
     java --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics,javafx.media,javafx.swing,javafx.web -Dprism.order=sw -cp bin;lib/* application.MyHealthTracker
 
 ------------------------------
 ## How to Perform JUnit Tests:
 
-All tests are located in the test directory. To run all tests, use the following command:
+Firstly, the JUnit test classes should be compiled. If they are not yet compiled, you can compile them in a similar way you did with the source files. Assuming they are already in the bin directory, you can run them as follows:
 
-    java -cp bin:test:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar org.junit.runner.JUnitCore [test class name]
-    
+    java -cp bin;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar org.junit.runner.JUnitCore test.HealthRecordTest test.UserProfileTest test.UserTest
+
+
 ----------------
 ## TROUBLESHOOTING:
 
