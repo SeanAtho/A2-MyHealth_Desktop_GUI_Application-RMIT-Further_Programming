@@ -68,9 +68,10 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 ------------------------------
 ## How to Perform JUnit Tests:
 
-All tests are located in the test directory. To run all tests, use the following command:
+Firstly, the JUnit test classes should be compiled. If they are not yet compiled, you can compile them in a similar way you did with the source files. Assuming they are already in the bin directory, you can run them as follows:
 
-    java -cp bin:test:lib/junit-4.13.2.jar:lib/hamcrest-core-1.3.jar org.junit.runner.JUnitCore [test class name]
+    java -cp bin;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar org.junit.runner.JUnitCore test.HealthRecordTest test.UserProfileTest test.UserTest
+
 
 ----------------
 ## TROUBLESHOOTING:
