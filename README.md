@@ -33,8 +33,8 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 
     cd C:\Users\yourusername\Desktop\MyHealth
 
-Remember to replace C:\Users\mrsti\Desktop\MyHealth with the actual path of your project folder.
-4. Now, you can compile all the Java files at once using the javac command. The -cp option is used to specify the classpath, and . means the current directory. src\*.java is a wildcard that matches all .java files in the 'src' directory.  External .jar files are located in the lib folder of your project. Here's how you can compile by entering the following into the command prompt. *Navigate to your project directory
+    Remember to replace C:\Users\mrsti\Desktop\MyHealth with the actual path of your project folder.
+4. Now, you can compile all the Java files at once using the javac command. The -cp option is used to specify the classpath, and . means the current directory. src\*.java is a wildcard that matches all .java files in the 'src' directory.External .jar files are located in the lib folder of your project. Here's how you can compile by entering the following into the command prompt. *Navigate to your project directory
 
 5. Generate the sources.txt file:
 
